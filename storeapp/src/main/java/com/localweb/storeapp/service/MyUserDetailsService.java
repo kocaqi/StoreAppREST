@@ -1,8 +1,8 @@
 package com.localweb.storeapp.service;
 
-import com.localweb.thelogin.thelogin.config.UserPrincipal;
-import com.localweb.thelogin.thelogin.dao.UserRepository;
-import com.localweb.thelogin.thelogin.entities.User;
+import com.localweb.storeapp.config.UserPrincipal;
+import com.localweb.storeapp.entity.User;
+import com.localweb.storeapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

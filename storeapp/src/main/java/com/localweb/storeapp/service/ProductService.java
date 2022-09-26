@@ -1,7 +1,7 @@
 package com.localweb.storeapp.service;
 
-import com.localweb.thelogin.thelogin.dao.ProductRepository;
-import com.localweb.thelogin.thelogin.entities.Product;
+import com.localweb.storeapp.entity.Product;
+import com.localweb.storeapp.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

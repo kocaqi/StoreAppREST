@@ -1,7 +1,7 @@
 package com.localweb.storeapp.config;
 
-import com.localweb.thelogin.thelogin.entities.Role;
-import com.localweb.thelogin.thelogin.entities.User;
+import com.localweb.storeapp.entity.Role;
+import com.localweb.storeapp.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,7 +1,7 @@
 package com.localweb.storeapp.repository;
 
-import com.localweb.thelogin.thelogin.entities.Order;
-import com.localweb.thelogin.thelogin.entities.User;
+import com.localweb.storeapp.entity.Order;
+import com.localweb.storeapp.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

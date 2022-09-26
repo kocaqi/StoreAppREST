@@ -26,53 +26,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		return authenticationProvider;
 	}
 
-	/*@Autowired
-	private DataSource dataSource;
-
-
-	public SecurityConfig(DataSource dataSource) {
-		this.dataSource = dataSource;
-	}*/
-
-	/*@Autowired
-        public SecurityConfig(UserService userService) {
-            this.userService = userService;
-        }
-
-        @Bean
-        @Override
-        public AuthenticationManager authenticationManagerBean() throws Exception {
-            return super.authenticationManagerBean();
-        }*/
-
-        /*@Bean
-        public UserDetailsService userDetailsService() {
-            return email -> {
-				com.localweb.thelogin.thelogin.entities.User user = userService.findUserByEmail(email);
-                if (user == null) {
-                    throw new UsernameNotFoundException("No user found with this email!");
-                }
-                return (UserDetails) user;
-            };
-        }*/
-
-
-	/*@Override
-	public void configure(AuthenticationManagerBuilder auth) throws Exception {
-
-		User.UserBuilder userBuilder = User.withDefaultPasswordEncoder();
-		auth.inMemoryAuthentication()
-				.withUser(userBuilder.username("admin").password("admin").roles("ADMIN"))
-				.withUser(userBuilder.username("operator").password("operator").roles("OPERATOR"));
-
-		auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
-
-		auth.jdbcAuthentication().dataSource(dataSource)
-				.usersByUsernameQuery("select email, password, enabled from users where email = ?");
-
-	}*/
-
-
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()

@@ -1,6 +1,6 @@
 package com.localweb.storeapp.repository;
 
-import com.localweb.thelogin.thelogin.entities.Role;
+import com.localweb.storeapp.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

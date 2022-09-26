@@ -16,7 +16,7 @@ import java.beans.PropertyVetoException;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "com.localweb.thelogin.thelogin")
+@ComponentScan(basePackages = "com.localweb.storeapp")
 @PropertySource("classpath:persistence-mysql.properties")
 public class AppConfig {
 	
