@@ -11,18 +11,4 @@ import java.util.List;
 @Service
 public class OrderProductService {
 
-    @Autowired
-    private final OrderProductRepository orderProductRepository;
-
-    public OrderProductService(OrderProductRepository orderProductRepository) {
-        this.orderProductRepository = orderProductRepository;
-    }
-
-    public List<OrderProduct> findProductsByOrder(Order order) {
-        return orderProductRepository.findProductsByOrder(order);
-    }
-
-    public void save(OrderProduct orderProduct) {
-        orderProductRepository.save(orderProduct);
-    }
 }

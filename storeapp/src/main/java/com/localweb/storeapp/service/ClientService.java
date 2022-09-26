@@ -11,30 +11,4 @@ import java.util.List;
 @Service
 public class ClientService {
 
-    @Autowired
-    private final ClientRepository clientRepository;
-
-    public ClientService(ClientRepository clientRepository) {
-        this.clientRepository = clientRepository;
-    }
-
-    public List<Client> findAll() {
-        return clientRepository.findAll();
-    }
-
-    public void save(Client client) {
-        clientRepository.save(client);
-    }
-
-    public Client getClient(int id) {
-        return clientRepository.getClientById(id);
-    }
-
-    public void delete(Client client) {
-        clientRepository.delete(client);
-    }
-
-    public List<Client> findAllByUser(User user) {
-        return clientRepository.findAllByTheUser(user);
-    }
 }

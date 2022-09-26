@@ -12,10 +12,4 @@ import java.util.List;
 
 @Repository
 public interface OrderProductRepository  extends JpaRepository<OrderProduct, OrderProductKey> {
-
-    @Query("select o from OrderProduct o where o.order=?1")
-    List<OrderProduct> findProductsByOrder(Order order);
-
-    @Query("select o from OrderProduct o where o.order=?1 and o.product=?2")
-    OrderProduct getByOrderAndProduct(Order order, Product product);
 }
