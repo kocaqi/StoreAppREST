@@ -1,5 +1,6 @@
 package com.localweb.storeapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -39,12 +40,14 @@ public class User {
 
     @OneToMany(mappedBy = "theUser", cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonManagedReference
     private List<Client> clients;
 
     @OneToMany(mappedBy = "user",
             cascade = {CascadeType.DETACH, CascadeType.MERGE,
                     CascadeType.PERSIST, CascadeType.REFRESH})
     @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonManagedReference
     private List<Order> orders;
 
     public int getId() {

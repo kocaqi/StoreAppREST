@@ -1,7 +1,6 @@
 package com.localweb.storeapp.controller;
 
 import com.localweb.storeapp.payload.ProductDTO;
-import com.localweb.storeapp.payload.UserDTO;
 import com.localweb.storeapp.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

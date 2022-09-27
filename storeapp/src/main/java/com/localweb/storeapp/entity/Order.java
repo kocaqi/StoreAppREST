@@ -1,6 +1,8 @@
 
 package com.localweb.storeapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -19,9 +21,11 @@ public class Order {
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name="user_id")
     @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonBackReference
     private User user;
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name="client_id")
+    @JsonBackReference(value = "client-order")
     private Client client_id;
     @Column(name = "amount")
     private double amount;
@@ -36,13 +40,14 @@ public class Order {
     public Order() {
     }
 
-    public Order(User user, Client client_id, double amount, LocalDate dateCreated,
-                 LocalDate dateUpdated) {
+    public Order(int id, User user, Client client_id, double amount, LocalDate dateCreated, LocalDate dateUpdated, List<OrderProduct> orderProducts) {
+        this.id = id;
         this.user = user;
         this.client_id = client_id;
         this.amount = amount;
         this.dateCreated = dateCreated;
         this.dateUpdated = dateUpdated;
+        this.orderProducts = orderProducts;
     }
 
     public int getId() {

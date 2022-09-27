@@ -1,4 +1,3 @@
-/*
 package com.localweb.storeapp.service;
 
 import com.localweb.storeapp.config.UserPrincipal;
@@ -28,4 +27,3 @@ public class MyUserDetailsService implements UserDetailsService {
         return new UserPrincipal(user);
     }
 }
-*/

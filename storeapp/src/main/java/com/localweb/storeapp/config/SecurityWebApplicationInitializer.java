@@ -1,4 +1,3 @@
-/*
 package com.localweb.storeapp.config;
 
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
@@ -6,5 +5,3 @@ import org.springframework.security.web.context.AbstractSecurityWebApplicationIn
 public class SecurityWebApplicationInitializer extends AbstractSecurityWebApplicationInitializer{
 
 }
-
-*/

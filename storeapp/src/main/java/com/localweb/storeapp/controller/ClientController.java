@@ -33,8 +33,8 @@ public class ClientController {
                                                 Principal principal){
         clientDTO.setDateCreated(LocalDate.now());
         clientDTO.setDateUpdated(LocalDate.now());
-        //String email = principal.getName();
-        User user = userService.findUserByEmail("kleo@gmail.com");
+        String email = principal.getName();
+        User user = userService.findUserByEmail(email);
         clientDTO.setTheUser(user);
         return new ResponseEntity<>(clientService.createClient(clientDTO), HttpStatus.CREATED);
     }

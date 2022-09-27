@@ -1,6 +1,8 @@
 
 package com.localweb.storeapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -18,6 +20,7 @@ public class Client {
     int id;
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name="user_id")
+    @JsonBackReference
     //@LazyCollection(LazyCollectionOption.FALSE)
     private User theUser;
     @Column(name = "first_name")
@@ -30,9 +33,9 @@ public class Client {
     private LocalDate dateCreated;
     @Column(name = "date_updated")
     private LocalDate dateUpdated;
-
     @OneToMany(mappedBy = "client_id", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonManagedReference(value = "client-order")
     private List<Order> orders;
 
     public Client() {

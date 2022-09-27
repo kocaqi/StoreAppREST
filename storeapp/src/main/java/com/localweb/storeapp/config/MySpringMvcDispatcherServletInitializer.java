@@ -1,4 +1,3 @@
-/*
 package com.localweb.storeapp.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
@@ -19,4 +18,4 @@ public class MySpringMvcDispatcherServletInitializer extends AbstractAnnotationC
         return new String[] {"/"};
     }
 }
-*/
+
