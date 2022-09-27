@@ -26,7 +26,7 @@ public class UserService{
         User newUser = userRepository.save(user);
 
         //convert entity to DTO
-        UserDTO userResponse = maptoDTO(newUser);
+        UserDTO userResponse = mapToDTO(newUser);
 
         return userResponse;
     }
@@ -37,10 +37,10 @@ public class UserService{
 
     public List<UserDTO> getAllUsers(){
         List<User> users = userRepository.findAll();
-        return users.stream().map(user -> maptoDTO(user)).collect(Collectors.toList());
+        return users.stream().map(user -> mapToDTO(user)).collect(Collectors.toList());
     }
 
-    private UserDTO maptoDTO(User newUser){
+    private UserDTO mapToDTO(User newUser){
         UserDTO userResponse = new UserDTO();
         userResponse.setId(newUser.getId());
         userResponse.setFirstName(newUser.getFirstName());
