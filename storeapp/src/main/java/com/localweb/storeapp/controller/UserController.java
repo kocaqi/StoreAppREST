@@ -21,7 +21,7 @@ public class UserController {
     }
 
     //create user
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO){
         userDTO.setDateCreated(LocalDate.now());
         userDTO.setDateUpdated(LocalDate.now());
