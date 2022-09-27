@@ -34,13 +34,14 @@ public class Product {
     public Product() {
     }
 
-    public Product(int id, String name, double price, double stock, LocalDate dateCreated, LocalDate dateUpdated) {
+    public Product(int id, String name, double price, double stock, LocalDate dateCreated, LocalDate dateUpdated, Set<OrderProduct> orders) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.stock = stock;
         this.dateCreated = dateCreated;
         this.dateUpdated = dateUpdated;
+        this.orders = orders;
     }
 
     public int getId() {
@@ -91,6 +92,13 @@ public class Product {
         this.dateUpdated = dateUpdated;
     }
 
+    public Set<OrderProduct> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<OrderProduct> orders) {
+        this.orders = orders;
+    }
 
     @Override
     public String toString() {
