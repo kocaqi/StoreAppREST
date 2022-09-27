@@ -1,4 +1,4 @@
-package com.localweb.storeapp.config;
+/*package com.localweb.storeapp.config;
 
 import com.localweb.storeapp.entity.Role;
 import com.localweb.storeapp.entity.User;
@@ -57,4 +57,4 @@ public class UserPrincipal implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-}
+}*/
