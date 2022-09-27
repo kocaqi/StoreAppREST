@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -21,21 +22,26 @@ public class UserService{
 
     public UserDTO createUser(UserDTO userDTO){
         //convert DTO to entity
-        User user = new User();
-        user.setFirstName(userDTO.getFirstName());
-        user.setLastName(userDTO.getLastName());
-        user.setEmail(userDTO.getEmail());
-        user.setPassword(userDTO.getPassword());
-        user.setDateCreated(userDTO.getDateCreated());
-        user.setDateUpdated(userDTO.getDateUpdated());
-        user.setRoles(userDTO.getRoles());
-        user.setEnabled(userDTO.getEnabled());
-        user.setClients(userDTO.getClients());
-        user.setOrders(userDTO.getOrders());
-
+        User user = mapToEntity(userDTO);
         User newUser = userRepository.save(user);
 
         //convert entity to DTO
+        UserDTO userResponse = maptoDTO(newUser);
+
+        return userResponse;
+    }
+
+    public User findUserByEmail(String email) {
+        return userRepository.findUserByEmail(email);
+    }
+
+    public List<UserDTO> getAllUsers(){
+
+        List<User> users = userRepository.findAll();
+        return users.stream().map(user -> maptoDTO(user)).collect(Collectors.toList());
+    }
+
+    private UserDTO maptoDTO(User newUser){
         UserDTO userResponse = new UserDTO();
         userResponse.setId(newUser.getId());
         userResponse.setFirstName(newUser.getFirstName());
@@ -48,12 +54,22 @@ public class UserService{
         userResponse.setEnabled(newUser.getEnabled());
         userResponse.setClients(newUser.getClients());
         userResponse.setOrders(newUser.getOrders());
-
         return userResponse;
     }
 
-    public User findUserByEmail(String email) {
-        return userRepository.findUserByEmail(email);
+    private User mapToEntity(UserDTO userDTO){
+        User user = new User();
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setEmail(userDTO.getEmail());
+        user.setPassword(userDTO.getPassword());
+        user.setDateCreated(userDTO.getDateCreated());
+        user.setDateUpdated(userDTO.getDateUpdated());
+        user.setRoles(userDTO.getRoles());
+        user.setEnabled(userDTO.getEnabled());
+        user.setClients(userDTO.getClients());
+        user.setOrders(userDTO.getOrders());
+        return user;
     }
 }
 

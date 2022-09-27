@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
@@ -28,4 +29,11 @@ public class UserController {
         userDTO.setEnabled(1);
         return new ResponseEntity<>(userService.createUser(userDTO), HttpStatus.CREATED);
     }
+
+    //get all users
+    @GetMapping
+    public List<UserDTO> getAllUsers(){
+        return userService.getAllUsers();
+    }
+
 }
