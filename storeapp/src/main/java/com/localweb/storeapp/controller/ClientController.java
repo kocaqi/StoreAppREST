@@ -2,6 +2,7 @@ package com.localweb.storeapp.controller;
 
 import com.localweb.storeapp.entity.User;
 import com.localweb.storeapp.payload.ClientDTO;
+import com.localweb.storeapp.payload.ProductDTO;
 import com.localweb.storeapp.service.ClientService;
 import com.localweb.storeapp.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -40,5 +41,11 @@ public class ClientController {
     @GetMapping
     public List<ClientDTO> getAll(){
         return clientService.getAll();
+    }
+
+    //get client by id
+    @GetMapping("/{id}")
+    public ResponseEntity<ClientDTO> getById(@PathVariable(name = "id") int id){
+        return new ResponseEntity<>(clientService.getById(id), HttpStatus.OK);
     }
 }

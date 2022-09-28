@@ -60,4 +60,9 @@ public class ClientService {
         return client;
     }
 
+    public ClientDTO getById(int id) {
+        Client client = clientRepository.findClientById(id);
+        ClientDTO clientDTO = mapToDTO(client);
+        return clientDTO;
+    }
 }
