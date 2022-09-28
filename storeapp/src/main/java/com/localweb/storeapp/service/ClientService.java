@@ -6,6 +6,7 @@ import com.localweb.storeapp.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -64,5 +65,16 @@ public class ClientService {
         Client client = clientRepository.findClientById(id);
         ClientDTO clientDTO = mapToDTO(client);
         return clientDTO;
+    }
+
+    public ClientDTO update(ClientDTO clientDTO, int id) {
+        Client client = clientRepository.findClientById(id);
+        client.setFirstName(clientDTO.getFirstName());
+        client.setLastName(clientDTO.getLastName());
+        client.setEmail(clientDTO.getEmail());
+        client.setDateUpdated(LocalDate.now());
+        Client updatedClient = clientRepository.save(client);
+
+        return mapToDTO(updatedClient);
     }
 }
