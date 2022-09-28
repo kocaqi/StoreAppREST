@@ -10,7 +10,7 @@ import java.time.LocalDate;
 public class OrderProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-            @Column(name = "id")
+    @Column(name = "id")
     int id;
     @ManyToOne
     @JoinColumn(name = "order_id")
