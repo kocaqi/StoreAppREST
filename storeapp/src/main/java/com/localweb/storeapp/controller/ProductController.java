@@ -1,6 +1,7 @@
 package com.localweb.storeapp.controller;
 
 import com.localweb.storeapp.payload.ProductDTO;
+import com.localweb.storeapp.payload.UserDTO;
 import com.localweb.storeapp.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,5 +38,12 @@ public class ProductController {
     @GetMapping("/{id}")
     public ResponseEntity<ProductDTO> getById(@PathVariable(name = "id") int id){
         return new ResponseEntity<>(productService.getById(id), HttpStatus.OK);
+    }
+
+    //update product
+    @PutMapping("/update/{id}")
+    public ResponseEntity<ProductDTO> update(@RequestBody ProductDTO productDTO, @PathVariable(name = "id") int id){
+        ProductDTO productResponse = productService.update(productDTO, id);
+        return new ResponseEntity<>(productResponse, HttpStatus.OK);
     }
 }

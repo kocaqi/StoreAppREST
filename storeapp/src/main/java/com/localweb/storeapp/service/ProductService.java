@@ -6,6 +6,7 @@ import com.localweb.storeapp.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,5 +63,18 @@ public class ProductService {
         Product product = productRepository.findProductById(id);
         ProductDTO productDTO = mapToDTO(product);
         return productDTO;
+    }
+
+    public ProductDTO update(ProductDTO productDTO, int id) {
+        Product product = productRepository.findProductById(id);
+        product.setName(productDTO.getName());
+        product.setPrice(productDTO.getPrice());
+        product.setStock(productDTO.getStock());
+        product.setDateUpdated(LocalDate.now());
+
+        Product updatedProduct = productRepository.save(product);
+
+        ProductDTO productResponse = mapToDTO(updatedProduct);
+        return productResponse;
     }
 }
