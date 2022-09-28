@@ -46,4 +46,11 @@ public class OrderController {
     public ResponseEntity<OrderDTO> getById(@PathVariable(name = "id") int id){
         return new ResponseEntity<>(orderService.getById(id), HttpStatus.OK);
     }
+
+    //update order
+    @PutMapping("/update/{id}")
+    public ResponseEntity<OrderDTO> update(@RequestBody OrderDTO orderDTO, @PathVariable(name = "id") int id){
+        OrderDTO orderResponse = orderService.update(orderDTO, id);
+        return new ResponseEntity<>(orderResponse, HttpStatus.OK);
+    }
 }

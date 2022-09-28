@@ -6,6 +6,7 @@ import com.localweb.storeapp.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -61,5 +62,12 @@ public class OrderService {
     public OrderDTO getById(int id) {
         Order order = orderRepository.findOrderById(id);
         return mapToDTO(order);
+    }
+
+    public OrderDTO update(OrderDTO orderDTO, int id) {
+        Order order = orderRepository.findOrderById(id);
+        order.setDateUpdated(LocalDate.now());
+        Order updatedOrder = orderRepository.save(order);
+        return mapToDTO(updatedOrder);
     }
 }
