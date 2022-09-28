@@ -6,6 +6,7 @@ import com.localweb.storeapp.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -34,9 +35,12 @@ public class ClientService {
         return clientResponse;
     }
 
-    public List<ClientDTO> getAll(int pageNo, int pageSize, String sortBy){
+    public List<ClientDTO> getAll(int pageNo, int pageSize, String sortBy, String sortDir){
 
-        PageRequest pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
         Page<Client> users = clientRepository.findAll(pageable);
 
         List<Client> clientList = users.getContent();

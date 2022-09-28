@@ -35,9 +35,12 @@ public class ProductService {
         return productResponse;
     }
 
-    public List<ProductDTO> getAll(int pageNo, int pageSize, String sortBy){
+    public List<ProductDTO> getAll(int pageNo, int pageSize, String sortBy, String sortDir){
 
-        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
         Page<Product> products = productRepository.findAll(pageable);
 
         List<Product> productList = products.getContent();
