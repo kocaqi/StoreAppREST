@@ -39,8 +39,9 @@ public class ClientController {
 
     //get all clients
     @GetMapping
-    public List<ClientDTO> getAll(){
-        return clientService.getAll();
+    public List<ClientDTO> getAll(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+                                  @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize){
+        return clientService.getAll(pageNo, pageSize);
     }
 
     //get client by id

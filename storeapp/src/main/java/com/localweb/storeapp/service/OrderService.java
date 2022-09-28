@@ -1,9 +1,13 @@
 package com.localweb.storeapp.service;
 
 import com.localweb.storeapp.entity.Order;
+import com.localweb.storeapp.entity.User;
 import com.localweb.storeapp.payload.OrderDTO;
+import com.localweb.storeapp.payload.UserDTO;
 import com.localweb.storeapp.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -31,9 +35,14 @@ public class OrderService {
         return orderRespose;
     }
 
-    public List<OrderDTO> getAll(){
-        List<Order> orders = orderRepository.findAll();
-        return orders.stream().map(order -> mapToDTO(order)).collect(Collectors.toList());
+    public List<OrderDTO> getAll(int pageNo, int pageSize){
+
+        PageRequest pageable = PageRequest.of(pageNo, pageSize);
+        Page<Order> orders = orderRepository.findAll(pageable);
+
+        List<Order> orderList = orders.getContent();
+
+        return orderList.stream().map(order -> mapToDTO(order)).collect(Collectors.toList());
     }
 
     private OrderDTO mapToDTO(Order newOrder){

@@ -30,8 +30,9 @@ public class ProductController {
 
     //get all products
     @GetMapping
-    public List<ProductDTO> getAll(){
-        return productService.getAll();
+    public List<ProductDTO> getAll(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+                                   @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize){
+        return productService.getAll(pageNo, pageSize);
     }
 
     //get product by id
