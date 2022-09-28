@@ -6,6 +6,7 @@ import com.localweb.storeapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -75,6 +76,20 @@ public class UserService{
         User user = userRepository.findUserById(id);
         UserDTO userDTO = mapToDTO(user);
         return userDTO;
+    }
+
+    public UserDTO update(UserDTO userDTO, int id) {
+        User user = userRepository.findUserById(id);
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setEmail(userDTO.getEmail());
+        user.setPassword(userDTO.getPassword());
+        user.setDateUpdated(LocalDate.now());
+        user.setRoles(userDTO.getRoles());
+        User updatedUser = userRepository.save(user);
+
+        UserDTO userResponse = mapToDTO(updatedUser);
+        return userResponse;
     }
 }
 
