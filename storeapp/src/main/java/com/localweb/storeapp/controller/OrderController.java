@@ -1,5 +1,6 @@
 package com.localweb.storeapp.controller;
 
+import com.localweb.storeapp.payload.ClientDTO;
 import com.localweb.storeapp.payload.OrderDTO;
 import com.localweb.storeapp.service.OrderService;
 import com.localweb.storeapp.service.UserService;
@@ -38,5 +39,11 @@ public class OrderController {
     @GetMapping
     public List<OrderDTO> getAll(){
         return orderService.getAll();
+    }
+
+    //get client by id
+    @GetMapping("/{id}")
+    public ResponseEntity<OrderDTO> getById(@PathVariable(name = "id") int id){
+        return new ResponseEntity<>(orderService.getById(id), HttpStatus.OK);
     }
 }

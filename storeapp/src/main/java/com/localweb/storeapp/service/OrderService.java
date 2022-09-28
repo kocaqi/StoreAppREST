@@ -58,4 +58,8 @@ public class OrderService {
         return order;
     }
 
+    public OrderDTO getById(int id) {
+        Order order = orderRepository.findOrderById(id);
+        return mapToDTO(order);
+    }
 }
