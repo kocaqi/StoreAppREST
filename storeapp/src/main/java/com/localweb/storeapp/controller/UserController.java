@@ -1,8 +1,6 @@
 package com.localweb.storeapp.controller;
 
-import com.localweb.storeapp.entity.Role;
 import com.localweb.storeapp.payload.UserDTO;
-import com.localweb.storeapp.service.RoleService;
 import com.localweb.storeapp.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,22 +21,22 @@ public class UserController {
 
     //create user
     @PostMapping("/create")
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO){
+    public ResponseEntity<UserDTO> create(@RequestBody UserDTO userDTO){
         userDTO.setDateCreated(LocalDate.now());
         userDTO.setDateUpdated(LocalDate.now());
         userDTO.setEnabled(1);
-        return new ResponseEntity<>(userService.createUser(userDTO), HttpStatus.CREATED);
+        return new ResponseEntity<>(userService.create(userDTO), HttpStatus.CREATED);
     }
 
     //get all users
     @GetMapping
-    public List<UserDTO> getAllUsers(){
-        return userService.getAllUsers();
+    public List<UserDTO> getAll(){
+        return userService.getAll();
     }
 
     //get user by id
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable(name = "id") int id){
-        return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
+    public ResponseEntity<UserDTO> getById(@PathVariable(name = "id") int id){
+        return new ResponseEntity<>(userService.getById(id), HttpStatus.OK);
     }
 }

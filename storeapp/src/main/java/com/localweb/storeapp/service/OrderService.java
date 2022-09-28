@@ -1,9 +1,7 @@
 package com.localweb.storeapp.service;
 
 import com.localweb.storeapp.entity.Order;
-import com.localweb.storeapp.entity.User;
 import com.localweb.storeapp.payload.OrderDTO;
-import com.localweb.storeapp.payload.UserDTO;
 import com.localweb.storeapp.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +19,7 @@ public class OrderService {
         this.orderRepository = orderRepository;
     }
 
-    public OrderDTO createOrder(OrderDTO orderDTO){
+    public OrderDTO create(OrderDTO orderDTO){
         //convert DTO to entity
         Order order = mapToEntity(orderDTO);
         Order newOrder = orderRepository.save(order);
@@ -32,7 +30,7 @@ public class OrderService {
         return orderRespose;
     }
 
-    public List<OrderDTO> getAllOrders(){
+    public List<OrderDTO> getAll(){
         List<Order> orders = orderRepository.findAll();
         return orders.stream().map(order -> mapToDTO(order)).collect(Collectors.toList());
     }

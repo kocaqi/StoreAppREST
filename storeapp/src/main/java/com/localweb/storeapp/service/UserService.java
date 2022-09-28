@@ -20,7 +20,7 @@ public class UserService{
         this.userRepository = userRepository;
     }
 
-    public UserDTO createUser(UserDTO userDTO){
+    public UserDTO create(UserDTO userDTO){
         //convert DTO to entity
         User user = mapToEntity(userDTO);
         User newUser = userRepository.save(user);
@@ -35,7 +35,7 @@ public class UserService{
         return userRepository.findUserByEmail(email);
     }
 
-    public List<UserDTO> getAllUsers(){
+    public List<UserDTO> getAll(){
         List<User> users = userRepository.findAll();
         return users.stream().map(user -> mapToDTO(user)).collect(Collectors.toList());
     }
@@ -71,7 +71,7 @@ public class UserService{
         return user;
     }
 
-    public UserDTO getUserById(int id) {
+    public UserDTO getById(int id) {
         User user = userRepository.findUserById(id);
         UserDTO userDTO = mapToDTO(user);
         return userDTO;

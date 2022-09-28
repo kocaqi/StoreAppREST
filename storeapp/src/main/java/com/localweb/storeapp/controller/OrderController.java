@@ -1,8 +1,6 @@
 package com.localweb.storeapp.controller;
 
-import com.localweb.storeapp.entity.User;
 import com.localweb.storeapp.payload.OrderDTO;
-import com.localweb.storeapp.payload.UserDTO;
 import com.localweb.storeapp.service.OrderService;
 import com.localweb.storeapp.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -27,18 +25,18 @@ public class OrderController {
 
     //create order
     @PostMapping("/create")
-    public ResponseEntity<OrderDTO> createUser(@RequestBody OrderDTO orderDTO,
+    public ResponseEntity<OrderDTO> create(@RequestBody OrderDTO orderDTO,
                                                Principal principal){
         orderDTO.setDateCreated(LocalDate.now());
         orderDTO.setDateUpdated(LocalDate.now());
         String email = principal.getName();
         orderDTO.setUser(userService.findUserByEmail(email));
-        return new ResponseEntity<>(orderService.createOrder(orderDTO), HttpStatus.CREATED);
+        return new ResponseEntity<>(orderService.create(orderDTO), HttpStatus.CREATED);
     }
 
     //get all orders
     @GetMapping
-    public List<OrderDTO> getAllOrders(){
-        return orderService.getAllOrders();
+    public List<OrderDTO> getAll(){
+        return orderService.getAll();
     }
 }

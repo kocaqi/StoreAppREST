@@ -2,8 +2,6 @@ package com.localweb.storeapp.controller;
 
 import com.localweb.storeapp.entity.User;
 import com.localweb.storeapp.payload.ClientDTO;
-import com.localweb.storeapp.payload.ProductDTO;
-import com.localweb.storeapp.payload.UserDTO;
 import com.localweb.storeapp.service.ClientService;
 import com.localweb.storeapp.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -28,19 +26,19 @@ public class ClientController {
 
     //create client
     @PostMapping("/create")
-    public ResponseEntity<ClientDTO> createUser(@RequestBody ClientDTO clientDTO,
+    public ResponseEntity<ClientDTO> create(@RequestBody ClientDTO clientDTO,
                                                 Principal principal){
         clientDTO.setDateCreated(LocalDate.now());
         clientDTO.setDateUpdated(LocalDate.now());
         String email = principal.getName();
         User user = userService.findUserByEmail(email);
         clientDTO.setTheUser(user);
-        return new ResponseEntity<>(clientService.createClient(clientDTO), HttpStatus.CREATED);
+        return new ResponseEntity<>(clientService.create(clientDTO), HttpStatus.CREATED);
     }
 
     //get all clients
     @GetMapping
-    public List<ClientDTO> getAllClients(){
-        return clientService.getAllClients();
+    public List<ClientDTO> getAll(){
+        return clientService.getAll();
     }
 }

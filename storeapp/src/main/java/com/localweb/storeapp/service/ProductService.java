@@ -1,14 +1,11 @@
 package com.localweb.storeapp.service;
 
 import com.localweb.storeapp.entity.Product;
-import com.localweb.storeapp.entity.User;
 import com.localweb.storeapp.payload.ProductDTO;
-import com.localweb.storeapp.payload.UserDTO;
 import com.localweb.storeapp.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,7 +19,7 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public ProductDTO createProduct(ProductDTO productDTO){
+    public ProductDTO create(ProductDTO productDTO){
         //convert DTO to entity
         Product product = maptoEntity(productDTO);
         Product newProduct = productRepository.save(product);
@@ -33,7 +30,7 @@ public class ProductService {
         return productResponse;
     }
 
-    public List<ProductDTO> getAllProducts(){
+    public List<ProductDTO> getAll(){
         List<Product> products = productRepository.findAll();
         return products.stream().map(product -> mapToDTO(product)).collect(Collectors.toList());
     }
@@ -61,4 +58,9 @@ public class ProductService {
         return product;
     }
 
+    public ProductDTO getById(int id) {
+        Product product = productRepository.findProductById(id);
+        ProductDTO productDTO = mapToDTO(product);
+        return productDTO;
+    }
 }

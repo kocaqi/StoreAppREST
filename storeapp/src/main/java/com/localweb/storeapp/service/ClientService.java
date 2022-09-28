@@ -1,13 +1,8 @@
 package com.localweb.storeapp.service;
 
 import com.localweb.storeapp.entity.Client;
-import com.localweb.storeapp.entity.Product;
-import com.localweb.storeapp.entity.User;
 import com.localweb.storeapp.payload.ClientDTO;
-import com.localweb.storeapp.payload.ProductDTO;
-import com.localweb.storeapp.payload.UserDTO;
 import com.localweb.storeapp.repository.ClientRepository;
-import com.localweb.storeapp.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +19,7 @@ public class ClientService {
         this.clientRepository = clientRepository;
     }
 
-    public ClientDTO createClient(ClientDTO clientDTO){
+    public ClientDTO create(ClientDTO clientDTO){
         //convert DTO to entity
         Client client = mapToEntity(clientDTO);
         Client newClient = clientRepository.save(client);
@@ -35,7 +30,7 @@ public class ClientService {
         return clientResponse;
     }
 
-    public List<ClientDTO> getAllClients(){
+    public List<ClientDTO> getAll(){
         List<Client> clients = clientRepository.findAll();
         return clients.stream().map(client -> mapToDTO(client)).collect(Collectors.toList());
     }
