@@ -70,5 +70,11 @@ public class UserService{
         user.setOrders(userDTO.getOrders());
         return user;
     }
+
+    public UserDTO getUserById(int id) {
+        User user = userRepository.findUserById(id);
+        UserDTO userDTO = mapToDTO(user);
+        return userDTO;
+    }
 }
 
