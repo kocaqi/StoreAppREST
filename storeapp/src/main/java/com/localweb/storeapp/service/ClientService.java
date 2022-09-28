@@ -1,13 +1,12 @@
 package com.localweb.storeapp.service;
 
 import com.localweb.storeapp.entity.Client;
-import com.localweb.storeapp.entity.User;
 import com.localweb.storeapp.payload.ClientDTO;
-import com.localweb.storeapp.payload.UserDTO;
 import com.localweb.storeapp.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -35,9 +34,9 @@ public class ClientService {
         return clientResponse;
     }
 
-    public List<ClientDTO> getAll(int pageNo, int pageSize){
+    public List<ClientDTO> getAll(int pageNo, int pageSize, String sortBy){
 
-        PageRequest pageable = PageRequest.of(pageNo, pageSize);
+        PageRequest pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
         Page<Client> users = clientRepository.findAll(pageable);
 
         List<Client> clientList = users.getContent();

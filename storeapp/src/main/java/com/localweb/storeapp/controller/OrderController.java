@@ -38,8 +38,9 @@ public class OrderController {
     //get all orders
     @GetMapping
     public List<OrderDTO> getAll(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
-                                 @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize){
-        return orderService.getAll(pageNo, pageSize);
+                                 @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
+                                 @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy){
+        return orderService.getAll(pageNo, pageSize, sortBy);
     }
 
     //get client by id

@@ -1,13 +1,13 @@
 package com.localweb.storeapp.service;
 
 import com.localweb.storeapp.entity.Product;
-import com.localweb.storeapp.entity.User;
 import com.localweb.storeapp.payload.ProductDTO;
-import com.localweb.storeapp.payload.UserDTO;
 import com.localweb.storeapp.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -35,9 +35,9 @@ public class ProductService {
         return productResponse;
     }
 
-    public List<ProductDTO> getAll(int pageNo, int pageSize){
+    public List<ProductDTO> getAll(int pageNo, int pageSize, String sortBy){
 
-        PageRequest pageable = PageRequest.of(pageNo, pageSize);
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
         Page<Product> products = productRepository.findAll(pageable);
 
         List<Product> productList = products.getContent();

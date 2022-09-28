@@ -31,8 +31,9 @@ public class UserController {
     //get all users
     @GetMapping
     public List<UserDTO> getAll(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
-                                @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize){
-        return userService.getAll(pageNo, pageSize);
+                                @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
+                                @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy){
+        return userService.getAll(pageNo, pageSize, sortBy);
     }
 
     //get user by id

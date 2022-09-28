@@ -6,6 +6,8 @@ import com.localweb.storeapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -38,14 +40,14 @@ public class UserService{
         return userRepository.findUserByEmail(email);
     }
 
-    public List<UserDTO> getAll(int pageNo, int pageSize){
+    public List<UserDTO> getAll(int pageNo, int pageSize, String sortBy){
 
-        PageRequest pageable = PageRequest.of(pageNo, pageSize);
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
         Page<User> users = userRepository.findAll(pageable);
 
         List<User> userList = users.getContent();
 
-        return userList.stream().map(user -> mapToDTO(user)).collect(Collectors.toList());
+        return userList.stream().map(this::mapToDTO).collect(Collectors.toList());
     }
 
     private UserDTO mapToDTO(User newUser){
