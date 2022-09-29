@@ -1,6 +1,8 @@
 
 package com.localweb.storeapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -14,9 +16,11 @@ public class OrderProduct {
     int id;
     @ManyToOne
     @JoinColumn(name = "order_id")
+    @JsonIgnore
     Order order;
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @JsonIgnore
     Product product;
     @Column(name = "quantity")
     double quantity;

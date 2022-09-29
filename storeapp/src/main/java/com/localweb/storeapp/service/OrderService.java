@@ -82,4 +82,12 @@ public class OrderService {
         Order updatedOrder = orderRepository.save(order);
         return mapToDTO(updatedOrder);
     }
+
+    public Order getOrderById(int id) {
+        return orderRepository.findOrderById(id);
+    }
+
+    public void save(Order order) {
+        orderRepository.save(order);
+    }
 }

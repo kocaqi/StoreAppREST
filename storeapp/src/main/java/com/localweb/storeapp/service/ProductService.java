@@ -89,4 +89,8 @@ public class ProductService {
         ProductDTO productResponse = mapToDTO(updatedProduct);
         return productResponse;
     }
+
+    public Product findProductById(int productId) {
+        return productRepository.findProductById(productId);
+    }
 }
