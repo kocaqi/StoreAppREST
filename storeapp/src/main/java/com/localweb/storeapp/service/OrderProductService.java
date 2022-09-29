@@ -71,13 +71,13 @@ public class OrderProductService {
 
     public OrderProductDTO update(OrderProductDTO orderProductDTO, int orderId, int productId) {
         OrderProduct orderProduct = orderProductRepository.findByOrderAndProduct(orderId, productId);
+        Order order = orderRepository.findOrderById(orderId);
+        order.setAmount(order.getAmount()+orderProductDTO.getQuantity()*orderProduct.getProduct().getPrice());
+        orderRepository.save(order);
         orderProduct.setDateUpdated(LocalDate.now());
         orderProduct.setQuantity(orderProduct.getQuantity()+ orderProductDTO.getQuantity());
         orderProduct.setAmount(orderProduct.getAmount()+ orderProductDTO.getQuantity()* orderProductDTO.getProduct().getPrice());
         OrderProduct updated = orderProductRepository.save(orderProduct);
-        Order order = orderRepository.findOrderById(orderId);
-        order.setAmount(order.getAmount()+orderProductDTO.getAmount());
-        orderRepository.save(order);
         return mapToDTO(updated);
     }
 }
