@@ -3,6 +3,7 @@ package com.localweb.storeapp.controller;
 import com.localweb.storeapp.entity.User;
 import com.localweb.storeapp.payload.ClientDTO;
 import com.localweb.storeapp.payload.ProductDTO;
+import com.localweb.storeapp.payload.Response;
 import com.localweb.storeapp.service.ClientService;
 import com.localweb.storeapp.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -39,10 +40,10 @@ public class ClientController {
 
     //get all clients
     @GetMapping
-    public List<ClientDTO> getAll(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
-                                  @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
-                                  @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
-                                  @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir){
+    public Response<ClientDTO> getAll(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+                                      @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
+                                      @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
+                                      @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir){
         return clientService.getAll(pageNo, pageSize, sortBy, sortDir);
     }
 

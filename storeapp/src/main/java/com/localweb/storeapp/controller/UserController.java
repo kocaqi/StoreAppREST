@@ -1,6 +1,7 @@
 package com.localweb.storeapp.controller;
 
 import com.localweb.storeapp.payload.UserDTO;
+import com.localweb.storeapp.payload.Response;
 import com.localweb.storeapp.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
@@ -31,10 +31,10 @@ public class UserController {
 
     //get all users
     @GetMapping
-    public List<UserDTO> getAll(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
-                                @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
-                                @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
-                                @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir){
+    public Response<UserDTO> getAll(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+                           @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
+                           @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
+                           @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir){
         return userService.getAll(pageNo, pageSize, sortBy, sortDir);
     }
 

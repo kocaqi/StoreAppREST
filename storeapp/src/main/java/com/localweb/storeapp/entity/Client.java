@@ -19,15 +19,15 @@ public class Client {
     @Column(name = "id")
     int id;
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinColumn(name="user_id")
+    @JoinColumn(name="user_id", nullable = false)
     @JsonBackReference
     //@LazyCollection(LazyCollectionOption.FALSE)
     private User theUser;
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false)
     private String firstName;
-    @Column(name = "last_name")
+    @Column(name = "last_name", nullable = false)
     private String lastName;
-    @Column(name = "email")
+    @Column(name = "email", nullable = false)
     private String email;
     @Column(name = "date_created")
     private LocalDate dateCreated;

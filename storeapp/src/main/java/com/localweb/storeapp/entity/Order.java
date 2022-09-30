@@ -19,15 +19,15 @@ public class Order {
     @Column(name = "id")
     private int id;
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinColumn(name="user_id")
+    @JoinColumn(name="user_id", nullable = false)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JsonBackReference
     private User user;
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinColumn(name="client_id")
+    @JoinColumn(name="client_id", nullable = false)
     @JsonBackReference(value = "client-order")
     private Client client_id;
-    @Column(name = "amount")
+    @Column(name = "amount", nullable = false)
     private double amount;
     @Column(name = "date_created")
     private LocalDate dateCreated;

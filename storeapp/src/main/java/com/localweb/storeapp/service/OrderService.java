@@ -3,7 +3,10 @@ package com.localweb.storeapp.service;
 import com.localweb.storeapp.entity.Order;
 import com.localweb.storeapp.exception.ResourceNotFoundException;
 import com.localweb.storeapp.payload.OrderDTO;
+import com.localweb.storeapp.payload.ProductDTO;
+import com.localweb.storeapp.payload.Response;
 import com.localweb.storeapp.repository.OrderRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,10 +22,12 @@ import java.util.stream.Collectors;
 public class OrderService {
 
     OrderRepository orderRepository;
+    ModelMapper modelMapper;
 
     @Autowired
-    public OrderService(OrderRepository orderRepository) {
+    public OrderService(OrderRepository orderRepository, ModelMapper modelMapper) {
         this.orderRepository = orderRepository;
+        this.modelMapper = modelMapper;
     }
 
     public OrderDTO create(OrderDTO orderDTO){
@@ -31,12 +36,10 @@ public class OrderService {
         Order newOrder = orderRepository.save(order);
 
         //convert entity to DTO
-        OrderDTO orderRespose = mapToDTO(newOrder);
-
-        return orderRespose;
+        return mapToDTO(newOrder);
     }
 
-    public List<OrderDTO> getAll(int pageNo, int pageSize, String sortBy, String sortDir){
+    public Response<OrderDTO> getAll(int pageNo, int pageSize, String sortBy, String sortDir){
 
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
@@ -46,30 +49,40 @@ public class OrderService {
 
         List<Order> orderList = orders.getContent();
 
-        return orderList.stream().map(order -> mapToDTO(order)).collect(Collectors.toList());
+        List<OrderDTO> content = orderList.stream().map(this::mapToDTO).collect(Collectors.toList());
+
+        Response<OrderDTO> orderResponse = new Response<>();
+        orderResponse.setContent(content);
+        orderResponse.setPageNo(orders.getNumber());
+        orderResponse.setPageSize(orders.getSize());
+        orderResponse.setTotalElements(orders.getTotalElements());
+        orderResponse.setTotalPages(orders.getTotalPages());
+        orderResponse.setLast(orders.isLast());
+
+        return orderResponse;
     }
 
     private OrderDTO mapToDTO(Order newOrder){
-        OrderDTO orderRespose = new OrderDTO();
+        /*OrderDTO orderRespose = new OrderDTO();
         orderRespose.setId(newOrder.getId());
         orderRespose.setUser(newOrder.getUser());
         orderRespose.setOrderProducts(newOrder.getOrderProducts());
         orderRespose.setAmount(newOrder.getAmount());
         orderRespose.setClient_id(newOrder.getClient_id());
         orderRespose.setDateCreated(newOrder.getDateCreated());
-        orderRespose.setDateUpdated(newOrder.getDateUpdated());
-        return orderRespose;
+        orderRespose.setDateUpdated(newOrder.getDateUpdated());*/
+        return modelMapper.map(newOrder, OrderDTO.class);
     }
 
     private Order mapToEntity(OrderDTO orderDTO){
-        Order order = new Order();
+        /*Order order = new Order();
         order.setUser(orderDTO.getUser());
         order.setOrderProducts(orderDTO.getOrderProducts());
         order.setAmount(orderDTO.getAmount());
         order.setClient_id(orderDTO.getClient_id());
         order.setDateCreated(orderDTO.getDateCreated());
-        order.setDateUpdated(orderDTO.getDateUpdated());
-        return order;
+        order.setDateUpdated(orderDTO.getDateUpdated());*/
+        return modelMapper.map(orderDTO, Order.class);
     }
 
     public OrderDTO getById(int id) {

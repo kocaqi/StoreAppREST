@@ -15,16 +15,16 @@ public class OrderProduct {
     @Column(name = "id")
     int id;
     @ManyToOne
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name = "order_id", nullable = false)
     @JsonIgnore
     Order order;
     @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", nullable = false)
     @JsonIgnore
     Product product;
-    @Column(name = "quantity")
+    @Column(name = "quantity", nullable = false)
     double quantity;
-    @Column(name = "amount")
+    @Column(name = "amount", nullable = false)
     double amount;
     @Column(name = "date_created")
     LocalDate dateCreated;

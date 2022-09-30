@@ -3,7 +3,9 @@ package com.localweb.storeapp.service;
 import com.localweb.storeapp.entity.User;
 import com.localweb.storeapp.exception.ResourceNotFoundException;
 import com.localweb.storeapp.payload.UserDTO;
+import com.localweb.storeapp.payload.Response;
 import com.localweb.storeapp.repository.UserRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,10 +22,12 @@ import java.util.stream.Collectors;
 public class UserService{
 
     private UserRepository userRepository;
+    private ModelMapper modelMapper;
 
     @Autowired
-    public UserService(UserRepository userRepository){
+    public UserService(UserRepository userRepository, ModelMapper modelMapper){
         this.userRepository = userRepository;
+        this.modelMapper = modelMapper;
     }
 
     public UserDTO create(UserDTO userDTO){
@@ -32,16 +36,14 @@ public class UserService{
         User newUser = userRepository.save(user);
 
         //convert entity to DTO
-        UserDTO userResponse = mapToDTO(newUser);
-
-        return userResponse;
+        return mapToDTO(newUser);
     }
 
     public User findUserByEmail(String email) {
         return userRepository.findUserByEmail(email);
     }
 
-    public List<UserDTO> getAll(int pageNo, int pageSize, String sortBy, String sortDir){
+    public Response<UserDTO> getAll(int pageNo, int pageSize, String sortBy, String sortDir){
 
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
@@ -51,11 +53,22 @@ public class UserService{
 
         List<User> userList = users.getContent();
 
-        return userList.stream().map(this::mapToDTO).collect(Collectors.toList());
+        List<UserDTO> content= userList.stream().map(this::mapToDTO).collect(Collectors.toList());
+
+        Response<UserDTO> response = new Response<>();
+        response.setContent(content);
+        response.setPageNo(users.getNumber());
+        response.setPageSize(users.getSize());
+        response.setTotalElements(users.getTotalElements());
+        response.setTotalPages(users.getTotalPages());
+        response.setLast(users.isLast());
+
+        return response;
     }
 
     private UserDTO mapToDTO(User newUser){
-        UserDTO userResponse = new UserDTO();
+        UserDTO userDTO = modelMapper.map(newUser, UserDTO.class);
+        /*UserDTO userResponse = new UserDTO();
         userResponse.setId(newUser.getId());
         userResponse.setFirstName(newUser.getFirstName());
         userResponse.setLastName(newUser.getLastName());
@@ -66,12 +79,12 @@ public class UserService{
         userResponse.setRoles(newUser.getRoles());
         userResponse.setEnabled(newUser.getEnabled());
         userResponse.setClients(newUser.getClients());
-        userResponse.setOrders(newUser.getOrders());
-        return userResponse;
+        userResponse.setOrders(newUser.getOrders());*/
+        return userDTO;
     }
 
     private User mapToEntity(UserDTO userDTO){
-        User user = new User();
+        /*User user = new User();
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
         user.setEmail(userDTO.getEmail());
@@ -81,14 +94,13 @@ public class UserService{
         user.setRoles(userDTO.getRoles());
         user.setEnabled(userDTO.getEnabled());
         user.setClients(userDTO.getClients());
-        user.setOrders(userDTO.getOrders());
-        return user;
+        user.setOrders(userDTO.getOrders());*/
+        return modelMapper.map(userDTO, User.class);
     }
 
     public UserDTO getById(int id) {
         User user = userRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("User", "id", id));
-        UserDTO userDTO = mapToDTO(user);
-        return userDTO;
+        return mapToDTO(user);
     }
 
     public UserDTO update(UserDTO userDTO, int id) {
@@ -101,8 +113,7 @@ public class UserService{
         user.setRoles(userDTO.getRoles());
         User updatedUser = userRepository.save(user);
 
-        UserDTO userResponse = mapToDTO(updatedUser);
-        return userResponse;
+        return mapToDTO(updatedUser);
     }
 }
 

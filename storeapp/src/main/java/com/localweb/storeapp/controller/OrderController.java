@@ -5,6 +5,7 @@ import com.localweb.storeapp.entity.OrderProduct;
 import com.localweb.storeapp.entity.Product;
 import com.localweb.storeapp.payload.OrderDTO;
 import com.localweb.storeapp.payload.OrderProductDTO;
+import com.localweb.storeapp.payload.Response;
 import com.localweb.storeapp.service.OrderProductService;
 import com.localweb.storeapp.service.OrderService;
 import com.localweb.storeapp.service.ProductService;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.time.LocalDate;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -46,10 +46,10 @@ public class OrderController {
 
     //get all orders
     @GetMapping
-    public List<OrderDTO> getAll(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
-                                 @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
-                                 @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
-                                 @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir) {
+    public Response<OrderDTO> getAll(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+                           @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
+                           @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
+                           @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir) {
         return orderService.getAll(pageNo, pageSize, sortBy, sortDir);
     }
 
