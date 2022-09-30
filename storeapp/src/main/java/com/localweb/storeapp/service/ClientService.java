@@ -1,6 +1,7 @@
 package com.localweb.storeapp.service;
 
 import com.localweb.storeapp.entity.Client;
+import com.localweb.storeapp.exception.ResourceNotFoundException;
 import com.localweb.storeapp.payload.ClientDTO;
 import com.localweb.storeapp.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,13 +75,13 @@ public class ClientService {
     }
 
     public ClientDTO getById(int id) {
-        Client client = clientRepository.findClientById(id);
+        Client client = clientRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Client", "id", id));
         ClientDTO clientDTO = mapToDTO(client);
         return clientDTO;
     }
 
     public ClientDTO update(ClientDTO clientDTO, int id) {
-        Client client = clientRepository.findClientById(id);
+        Client client = clientRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Client", "id", id));
         client.setFirstName(clientDTO.getFirstName());
         client.setLastName(clientDTO.getLastName());
         client.setEmail(clientDTO.getEmail());

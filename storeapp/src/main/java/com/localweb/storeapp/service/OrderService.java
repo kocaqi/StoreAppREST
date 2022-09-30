@@ -1,6 +1,7 @@
 package com.localweb.storeapp.service;
 
 import com.localweb.storeapp.entity.Order;
+import com.localweb.storeapp.exception.ResourceNotFoundException;
 import com.localweb.storeapp.payload.OrderDTO;
 import com.localweb.storeapp.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,19 +73,19 @@ public class OrderService {
     }
 
     public OrderDTO getById(int id) {
-        Order order = orderRepository.findOrderById(id);
+        Order order = orderRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Order", "id", id));
         return mapToDTO(order);
     }
 
     public OrderDTO update(OrderDTO orderDTO, int id) {
-        Order order = orderRepository.findOrderById(id);
+        Order order = orderRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Order", "id", id));
         order.setDateUpdated(LocalDate.now());
         Order updatedOrder = orderRepository.save(order);
         return mapToDTO(updatedOrder);
     }
 
     public Order getOrderById(int id) {
-        return orderRepository.findOrderById(id);
+        return orderRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Order", "id", id));
     }
 
     public void save(Order order) {

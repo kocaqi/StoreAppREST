@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
-@Table(name="products")
+@Table(name="products", uniqueConstraints = {@UniqueConstraint(columnNames = {"name"})})
 public class Product {
 
     @Id

@@ -1,6 +1,7 @@
 package com.localweb.storeapp.service;
 
 import com.localweb.storeapp.entity.Product;
+import com.localweb.storeapp.exception.ResourceNotFoundException;
 import com.localweb.storeapp.payload.ProductDTO;
 import com.localweb.storeapp.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,13 +73,13 @@ public class ProductService {
     }
 
     public ProductDTO getById(int id) {
-        Product product = productRepository.findProductById(id);
+        Product product = productRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Product", "id", id));
         ProductDTO productDTO = mapToDTO(product);
         return productDTO;
     }
 
     public ProductDTO update(ProductDTO productDTO, int id) {
-        Product product = productRepository.findProductById(id);
+        Product product = productRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Product", "id", id));
         product.setName(productDTO.getName());
         product.setPrice(productDTO.getPrice());
         product.setStock(productDTO.getStock());
@@ -91,6 +92,6 @@ public class ProductService {
     }
 
     public Product findProductById(int productId) {
-        return productRepository.findProductById(productId);
+        return productRepository.findById(productId).orElseThrow(()->new ResourceNotFoundException("Product", "id", productId));
     }
 }

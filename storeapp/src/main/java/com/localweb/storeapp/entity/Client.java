@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name="clients")
+@Table(name="clients", uniqueConstraints = {@UniqueConstraint(columnNames = {"email"})})
 public class Client {
 
     @Id

@@ -1,6 +1,7 @@
 package com.localweb.storeapp.service;
 
 import com.localweb.storeapp.entity.User;
+import com.localweb.storeapp.exception.ResourceNotFoundException;
 import com.localweb.storeapp.payload.UserDTO;
 import com.localweb.storeapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,13 +86,13 @@ public class UserService{
     }
 
     public UserDTO getById(int id) {
-        User user = userRepository.findUserById(id);
+        User user = userRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("User", "id", id));
         UserDTO userDTO = mapToDTO(user);
         return userDTO;
     }
 
     public UserDTO update(UserDTO userDTO, int id) {
-        User user = userRepository.findUserById(id);
+        User user = userRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("User", "id", id));
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
         user.setEmail(userDTO.getEmail());
