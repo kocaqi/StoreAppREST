@@ -11,7 +11,6 @@ import java.util.List;
 @Data
 public class ClientDTO {
     int id;
-    @NotEmpty(message = "This Field cannot be null!")
     private User theUser;
     @NotEmpty(message = "This Field cannot be null!")
     private String firstName;
