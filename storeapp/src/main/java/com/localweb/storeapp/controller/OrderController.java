@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.time.LocalDate;
 
@@ -35,7 +36,7 @@ public class OrderController {
 
     //create order
     @PostMapping("/create")
-    public ResponseEntity<OrderDTO> create(@RequestBody OrderDTO orderDTO,
+    public ResponseEntity<OrderDTO> create(@Valid @RequestBody OrderDTO orderDTO,
                                            Principal principal) {
         orderDTO.setDateCreated(LocalDate.now());
         orderDTO.setDateUpdated(LocalDate.now());
@@ -61,14 +62,14 @@ public class OrderController {
 
     //update order
     @PutMapping("/update/{id}")
-    public ResponseEntity<OrderDTO> update(@RequestBody OrderDTO orderDTO, @PathVariable(name = "id") int id) {
+    public ResponseEntity<OrderDTO> update(@Valid @RequestBody OrderDTO orderDTO, @PathVariable(name = "id") int id) {
         OrderDTO orderResponse = orderService.update(orderDTO, id);
         return new ResponseEntity<>(orderResponse, HttpStatus.OK);
     }
 
     //add product to order
     @PostMapping("/{id}/addProduct")
-    public ResponseEntity<OrderProductDTO> addProduct(@RequestBody OrderProductDTO orderProductDTO, @PathVariable("id") int orderId) {
+    public ResponseEntity<OrderProductDTO> addProduct(@Valid @RequestBody OrderProductDTO orderProductDTO, @PathVariable("id") int orderId) {
         Order order = orderService.getOrderById(orderId);
         orderProductDTO.setOrder(order);
         int productId = orderProductDTO.getProduct().getId();

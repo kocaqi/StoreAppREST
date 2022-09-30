@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
@@ -28,7 +29,7 @@ public class ClientController {
 
     //create client
     @PostMapping("/create")
-    public ResponseEntity<ClientDTO> create(@RequestBody ClientDTO clientDTO,
+    public ResponseEntity<ClientDTO> create(@Valid @RequestBody ClientDTO clientDTO,
                                                 Principal principal){
         clientDTO.setDateCreated(LocalDate.now());
         clientDTO.setDateUpdated(LocalDate.now());
@@ -55,7 +56,7 @@ public class ClientController {
 
     //update client
     @PutMapping("/update/{id}")
-    public ResponseEntity<ClientDTO> update(@RequestBody ClientDTO clientDTO, @PathVariable(name = "id") int id){
+    public ResponseEntity<ClientDTO> update(@Valid @RequestBody ClientDTO clientDTO, @PathVariable(name = "id") int id){
         ClientDTO clientResponse = clientService.update(clientDTO, id);
         return new ResponseEntity<>(clientResponse, HttpStatus.OK);
     }

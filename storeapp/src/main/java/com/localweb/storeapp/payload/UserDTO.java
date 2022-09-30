@@ -7,6 +7,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ public class UserDTO {
     @NotEmpty(message = "This Field cannot be null!")
     private String email;
     @NotEmpty(message = "This Field cannot be null!")
+    @Size(min = 4, message = "Password should have more than 4 characters!")
     private String password;
     private LocalDate dateCreated;
     private LocalDate dateUpdated;

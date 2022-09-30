@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 
 @RestController
@@ -21,7 +22,7 @@ public class ProductController {
 
     //create product
     @PostMapping("/create")
-    public ResponseEntity<ProductDTO> create(@RequestBody ProductDTO productDTO){
+    public ResponseEntity<ProductDTO> create(@Valid @RequestBody ProductDTO productDTO){
         productDTO.setDateCreated(LocalDate.now());
         productDTO.setDateUpdated(LocalDate.now());
         return new ResponseEntity<>(productService.create(productDTO), HttpStatus.CREATED);
@@ -44,7 +45,7 @@ public class ProductController {
 
     //update product
     @PutMapping("/update/{id}")
-    public ResponseEntity<ProductDTO> update(@RequestBody ProductDTO productDTO, @PathVariable(name = "id") int id){
+    public ResponseEntity<ProductDTO> update(@Valid @RequestBody ProductDTO productDTO, @PathVariable(name = "id") int id){
         ProductDTO productResponse = productService.update(productDTO, id);
         return new ResponseEntity<>(productResponse, HttpStatus.OK);
     }
