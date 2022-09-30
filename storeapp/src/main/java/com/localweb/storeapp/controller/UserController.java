@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class UserController {
 
     //create user
     @PostMapping("/create")
-    public ResponseEntity<UserDTO> create(@RequestBody UserDTO userDTO){
+    public ResponseEntity<UserDTO> create(@Valid @RequestBody UserDTO userDTO){
         userDTO.setDateCreated(LocalDate.now());
         userDTO.setDateUpdated(LocalDate.now());
         userDTO.setEnabled(1);
@@ -45,7 +46,7 @@ public class UserController {
 
     //update user
     @PutMapping("/update/{id}")
-    public ResponseEntity<UserDTO> update(@RequestBody UserDTO userDTO, @PathVariable(name = "id") int id){
+    public ResponseEntity<UserDTO> update(@Valid @RequestBody UserDTO userDTO, @PathVariable(name = "id") int id){
         UserDTO userResponse = userService.update(userDTO, id);
         return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }
