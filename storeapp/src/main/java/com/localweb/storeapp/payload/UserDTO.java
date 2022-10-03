@@ -26,7 +26,6 @@ public class UserDTO {
     private String password;
     private LocalDate dateCreated;
     private LocalDate dateUpdated;
-    //@NotEmpty(message = "This Field cannot be null!")
     private List<Role> roles = new ArrayList<>();
     private int enabled;
     private List<Client> clients;
