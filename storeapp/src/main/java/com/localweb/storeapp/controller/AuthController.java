@@ -1,10 +1,12 @@
 package com.localweb.storeapp.controller;
 
 import com.localweb.storeapp.entity.User;
-import com.localweb.storeapp.payload.LoginDTO;
-import com.localweb.storeapp.payload.SignupDTO;
+import com.localweb.storeapp.payload.JWTAuthResponse;
+import com.localweb.storeapp.payload.loginAndSignupDTO.LoginDTO;
+import com.localweb.storeapp.payload.loginAndSignupDTO.SignupDTO;
 import com.localweb.storeapp.repository.RoleRepository;
 import com.localweb.storeapp.repository.UserRepository;
+import com.localweb.storeapp.security.JWTProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,17 +33,20 @@ public class AuthController {
     private UserRepository userRepository;
 
     @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private JWTProvider provider;
+
     @PostMapping("/login")
-    public ResponseEntity<String> authenticateUser(@RequestBody LoginDTO loginDTO){
+    public ResponseEntity<JWTAuthResponse> authenticateUser(@RequestBody LoginDTO loginDTO){
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return new ResponseEntity<>("User logged in successfully!", HttpStatus.OK);
+
+        String token = provider.generateToken(authentication);
+
+        return ResponseEntity.ok(new JWTAuthResponse(token));
     }
 
     @PostMapping("/signup")

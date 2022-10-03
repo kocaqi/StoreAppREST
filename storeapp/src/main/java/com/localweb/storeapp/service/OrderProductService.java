@@ -2,9 +2,7 @@ package com.localweb.storeapp.service;
 
 import com.localweb.storeapp.entity.Order;
 import com.localweb.storeapp.entity.OrderProduct;
-import com.localweb.storeapp.entity.Product;
-import com.localweb.storeapp.payload.OrderDTO;
-import com.localweb.storeapp.payload.OrderProductDTO;
+import com.localweb.storeapp.payload.entityDTO.OrderProductDTO;
 import com.localweb.storeapp.repository.OrderProductRepository;
 import com.localweb.storeapp.repository.OrderRepository;
 import com.localweb.storeapp.repository.ProductRepository;
@@ -12,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Service
 public class OrderProductService {

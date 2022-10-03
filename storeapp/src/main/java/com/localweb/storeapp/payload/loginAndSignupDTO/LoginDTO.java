@@ -1,4 +1,4 @@
-package com.localweb.storeapp.payload;
+package com.localweb.storeapp.payload.loginAndSignupDTO;
 
 import lombok.Data;
 

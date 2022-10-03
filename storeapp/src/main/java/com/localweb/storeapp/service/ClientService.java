@@ -2,7 +2,7 @@ package com.localweb.storeapp.service;
 
 import com.localweb.storeapp.entity.Client;
 import com.localweb.storeapp.exception.ResourceNotFoundException;
-import com.localweb.storeapp.payload.ClientDTO;
+import com.localweb.storeapp.payload.entityDTO.ClientDTO;
 import com.localweb.storeapp.payload.Response;
 import com.localweb.storeapp.repository.ClientRepository;
 import org.modelmapper.ModelMapper;

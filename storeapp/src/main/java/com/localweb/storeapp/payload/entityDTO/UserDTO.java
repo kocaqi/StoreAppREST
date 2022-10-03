@@ -1,4 +1,4 @@
-package com.localweb.storeapp.payload;
+package com.localweb.storeapp.payload.entityDTO;
 
 import com.localweb.storeapp.entity.Client;
 import com.localweb.storeapp.entity.Order;

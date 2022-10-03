@@ -1,10 +1,12 @@
 package com.localweb.storeapp.controller;
 
-import com.localweb.storeapp.payload.UserDTO;
+import com.localweb.storeapp.payload.entityDTO.UserDTO;
 import com.localweb.storeapp.payload.Response;
 import com.localweb.storeapp.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -26,6 +28,8 @@ public class UserController {
         userDTO.setDateCreated(LocalDate.now());
         userDTO.setDateUpdated(LocalDate.now());
         userDTO.setEnabled(1);
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         return new ResponseEntity<>(userService.create(userDTO), HttpStatus.CREATED);
     }
 

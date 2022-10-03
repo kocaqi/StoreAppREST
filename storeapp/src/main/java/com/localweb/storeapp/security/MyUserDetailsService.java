@@ -1,4 +1,4 @@
-package com.localweb.storeapp.service;
+package com.localweb.storeapp.security;
 
 import com.localweb.storeapp.config.UserPrincipal;
 import com.localweb.storeapp.entity.Role;

@@ -1,26 +1,25 @@
-package com.localweb.storeapp.payload;
+package com.localweb.storeapp.payload.entityDTO;
 
+import com.localweb.storeapp.entity.Client;
 import com.localweb.storeapp.entity.OrderProduct;
+import com.localweb.storeapp.entity.User;
 import lombok.Data;
 
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.util.Set;
+import java.util.List;
 
 @Data
-public class ProductDTO {
+public class OrderDTO {
     private int id;
-    @NotEmpty(message = "This Field cannot be null!")
-    private String name;
+    private User user;
+    @NotNull(message = "This Field cannot be null!")
+    private Client client_id;
     @NotNull(message = "This Field cannot be null!")
     @Min(value = 0, message = "Please enter positive number!")
-    private double price;
-    @NotNull(message = "This Field cannot be null!")
-    @Min(value = 0, message = "Please enter positive number!")
-    private double stock;
+    private double amount;
     private LocalDate dateCreated;
     private LocalDate dateUpdated;
-    private Set<OrderProduct> orders;
+    private List<OrderProduct> orderProducts;
 }

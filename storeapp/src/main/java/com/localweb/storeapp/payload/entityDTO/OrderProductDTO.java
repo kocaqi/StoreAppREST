@@ -1,4 +1,4 @@
-package com.localweb.storeapp.payload;
+package com.localweb.storeapp.payload.entityDTO;
 
 import com.localweb.storeapp.entity.Order;
 import com.localweb.storeapp.entity.Product;

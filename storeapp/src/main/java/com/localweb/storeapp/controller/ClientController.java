@@ -1,8 +1,7 @@
 package com.localweb.storeapp.controller;
 
 import com.localweb.storeapp.entity.User;
-import com.localweb.storeapp.payload.ClientDTO;
-import com.localweb.storeapp.payload.ProductDTO;
+import com.localweb.storeapp.payload.entityDTO.ClientDTO;
 import com.localweb.storeapp.payload.Response;
 import com.localweb.storeapp.service.ClientService;
 import com.localweb.storeapp.service.UserService;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.time.LocalDate;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/clients")
