@@ -14,7 +14,6 @@ import java.util.List;
 
 @Data
 public class UserDTO {
-    private int id;
     @NotEmpty(message = "This Field cannot be null!")
     private String firstName;
     @NotEmpty(message = "This Field cannot be null!")
@@ -24,10 +23,5 @@ public class UserDTO {
     @NotEmpty(message = "This Field cannot be null!")
     @Size(min = 4, message = "Password should have more than 4 characters!")
     private String password;
-    private LocalDate dateCreated;
-    private LocalDate dateUpdated;
     private List<Role> roles = new ArrayList<>();
-    private int enabled;
-    private List<Client> clients;
-    private List<Order> orders;
 }

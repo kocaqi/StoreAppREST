@@ -25,11 +25,6 @@ public class UserController {
     //create user
     @PostMapping("/create")
     public ResponseEntity<UserDTO> create(@Valid @RequestBody UserDTO userDTO){
-        userDTO.setDateCreated(LocalDate.now());
-        userDTO.setDateUpdated(LocalDate.now());
-        userDTO.setEnabled(1);
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         return new ResponseEntity<>(userService.create(userDTO), HttpStatus.CREATED);
     }
 

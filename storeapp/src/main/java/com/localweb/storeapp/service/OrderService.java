@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,16 +23,22 @@ public class OrderService {
 
     OrderRepository orderRepository;
     ModelMapper modelMapper;
+    UserService userService;
 
     @Autowired
-    public OrderService(OrderRepository orderRepository, ModelMapper modelMapper) {
+    public OrderService(OrderRepository orderRepository, ModelMapper modelMapper, UserService userService) {
         this.orderRepository = orderRepository;
         this.modelMapper = modelMapper;
+        this.userService = userService;
     }
 
-    public OrderDTO create(OrderDTO orderDTO){
+    public OrderDTO create(OrderDTO orderDTO, Principal principal){
         //convert DTO to entity
         Order order = mapToEntity(orderDTO);
+        order.setDateCreated(LocalDate.now());
+        order.setDateUpdated(LocalDate.now());
+        String email = principal.getName();
+        order.setUser(userService.findUserByEmail(email));
         Order newOrder = orderRepository.save(order);
 
         //convert entity to DTO

@@ -1,9 +1,11 @@
 package com.localweb.storeapp.service;
 
+import com.localweb.storeapp.entity.Role;
 import com.localweb.storeapp.entity.User;
 import com.localweb.storeapp.exception.ResourceNotFoundException;
 import com.localweb.storeapp.payload.entityDTO.UserDTO;
 import com.localweb.storeapp.payload.Response;
+import com.localweb.storeapp.repository.RoleRepository;
 import com.localweb.storeapp.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -23,17 +27,33 @@ import java.util.stream.Collectors;
 public class UserService{
 
     private UserRepository userRepository;
+    private RoleRepository roleRepository;
     private ModelMapper modelMapper;
 
+
     @Autowired
-    public UserService(UserRepository userRepository, ModelMapper modelMapper){
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, ModelMapper modelMapper){
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
         this.modelMapper = modelMapper;
     }
 
     public UserDTO create(UserDTO userDTO){
         //convert DTO to entity
         User user = mapToEntity(userDTO);
+        user.setDateCreated(LocalDate.now());
+        user.setDateUpdated(LocalDate.now());
+        user.setEnabled(1);
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        user.setRoles(userDTO.getRoles());
+
+        /*List<Role> roles = userDTO.getRoles();
+        for (Role role : roles) {
+            role = roleRepository.findById(role.getId()).orElseThrow(()->new UsernameNotFoundException("Role with not found!"));
+            user.addRole(role);
+        }*/
+
         User newUser = userRepository.save(user);
 
         //convert entity to DTO
@@ -41,7 +61,7 @@ public class UserService{
     }
 
     public User findUserByEmail(String email) {
-        return userRepository.findUserByEmail(email).orElseThrow(()->new UsernameNotFoundException("User with email "+email+" not found!" ));
+        return userRepository.findUserByEmail(email).orElseThrow(()->new UsernameNotFoundException("User with email "+email+" not found!"));
     }
 
     public Response<UserDTO> getAll(int pageNo, int pageSize, String sortBy, String sortDir){
@@ -109,7 +129,8 @@ public class UserService{
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
         user.setEmail(userDTO.getEmail());
-        user.setPassword(userDTO.getPassword());
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         user.setDateUpdated(LocalDate.now());
         user.setRoles(userDTO.getRoles());
         User updatedUser = userRepository.save(user);

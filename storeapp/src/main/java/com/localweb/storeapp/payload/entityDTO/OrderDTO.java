@@ -12,14 +12,6 @@ import java.util.List;
 
 @Data
 public class OrderDTO {
-    private int id;
-    private User user;
     @NotNull(message = "This Field cannot be null!")
     private Client client_id;
-    @NotNull(message = "This Field cannot be null!")
-    @Min(value = 0, message = "Please enter positive number!")
-    private double amount;
-    private LocalDate dateCreated;
-    private LocalDate dateUpdated;
-    private List<OrderProduct> orderProducts;
 }

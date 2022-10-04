@@ -23,8 +23,6 @@ public class ProductController {
     //create product
     @PostMapping("/create")
     public ResponseEntity<ProductDTO> create(@Valid @RequestBody ProductDTO productDTO){
-        productDTO.setDateCreated(LocalDate.now());
-        productDTO.setDateUpdated(LocalDate.now());
         return new ResponseEntity<>(productService.create(productDTO), HttpStatus.CREATED);
     }
 

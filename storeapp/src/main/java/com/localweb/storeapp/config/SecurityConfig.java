@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -50,8 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf()
-				.disable()
+		http.csrf().disable()
 				.exceptionHandling()
 				.authenticationEntryPoint(authenticationEntryPoint)
 			.and()
@@ -65,12 +63,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/api/clients/**").hasAnyRole("ADMIN", "OPERATOR")
 				.antMatchers("/api/products/**").hasRole("ADMIN")
 				.antMatchers("/api/orders/**").hasAnyRole("ADMIN", "OPERATOR")
-				.anyRequest().authenticated()
+				.antMatchers("/v2/api-docs/**").permitAll()
+				.antMatchers("/swagger-ui/**").permitAll()
+				.antMatchers("/swagger-resources/**").permitAll()
+				.antMatchers("/swagger-ui.html/**").permitAll()
+				.antMatchers("/webjars/**").permitAll()
+				.anyRequest()
+				.authenticated()
 			.and()
 				.formLogin()
-				.usernameParameter("email").passwordParameter("password")
+				.usernameParameter("email")
+				.passwordParameter("password")
 			.and()
-				.logout().logoutSuccessUrl("/login");
+				.logout()
+				.logoutSuccessUrl("/login");
 		http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
 

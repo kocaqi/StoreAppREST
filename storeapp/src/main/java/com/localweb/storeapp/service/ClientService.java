@@ -1,18 +1,22 @@
 package com.localweb.storeapp.service;
 
 import com.localweb.storeapp.entity.Client;
+import com.localweb.storeapp.entity.User;
 import com.localweb.storeapp.exception.ResourceNotFoundException;
 import com.localweb.storeapp.payload.entityDTO.ClientDTO;
 import com.localweb.storeapp.payload.Response;
 import com.localweb.storeapp.repository.ClientRepository;
+import com.localweb.storeapp.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,24 +25,31 @@ import java.util.stream.Collectors;
 public class ClientService {
 
     private ClientRepository clientRepository;
+    private UserRepository userRepository;
     private ModelMapper modelMapper;
 
     @Autowired
-    public ClientService(ClientRepository clientRepository, ModelMapper modelMapper) {
+    public ClientService(ClientRepository clientRepository, UserRepository userRepository, ModelMapper modelMapper) {
         this.clientRepository = clientRepository;
+        this.userRepository = userRepository;
         this.modelMapper = modelMapper;
     }
 
-    public ClientDTO create(ClientDTO clientDTO){
+    public ClientDTO create(ClientDTO clientDTO, Principal principal) {
         //convert DTO to entity
         Client client = mapToEntity(clientDTO);
+        client.setDateCreated(LocalDate.now());
+        client.setDateUpdated(LocalDate.now());
+        String email = principal.getName();
+        User user = userRepository.findUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User with email " + email + " not found!"));
+        client.setTheUser(user);
         Client newClient = clientRepository.save(client);
 
         //convert entity to DTO
         return mapToDTO(newClient);
     }
 
-    public Response<ClientDTO> getAll(int pageNo, int pageSize, String sortBy, String sortDir){
+    public Response<ClientDTO> getAll(int pageNo, int pageSize, String sortBy, String sortDir) {
 
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
@@ -48,7 +59,7 @@ public class ClientService {
 
         List<Client> clientList = clients.getContent();
 
-        List<ClientDTO> content= clientList.stream().map(this::mapToDTO).collect(Collectors.toList());
+        List<ClientDTO> content = clientList.stream().map(this::mapToDTO).collect(Collectors.toList());
 
         Response<ClientDTO> postResponse = new Response<>();
         postResponse.setContent(content);
@@ -61,7 +72,7 @@ public class ClientService {
         return postResponse;
     }
 
-    private ClientDTO mapToDTO(Client newClient){
+    private ClientDTO mapToDTO(Client newClient) {
         /*ClientDTO clientResponse = new ClientDTO();
         clientResponse.setId(newClient.getId());
         clientResponse.setFirstName(newClient.getFirstName());
@@ -74,7 +85,7 @@ public class ClientService {
         return modelMapper.map(newClient, ClientDTO.class);
     }
 
-    private Client mapToEntity(ClientDTO clientDTO){
+    private Client mapToEntity(ClientDTO clientDTO) {
         /*Client client = new Client();
         client.setFirstName(clientDTO.getFirstName());
         client.setLastName(clientDTO.getLastName());
@@ -87,12 +98,12 @@ public class ClientService {
     }
 
     public ClientDTO getById(int id) {
-        Client client = clientRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Client", "id", id));
+        Client client = clientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Client", "id", id));
         return mapToDTO(client);
     }
 
     public ClientDTO update(ClientDTO clientDTO, int id) {
-        Client client = clientRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Client", "id", id));
+        Client client = clientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Client", "id", id));
         client.setFirstName(clientDTO.getFirstName());
         client.setLastName(clientDTO.getLastName());
         client.setEmail(clientDTO.getEmail());

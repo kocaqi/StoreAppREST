@@ -11,15 +11,9 @@ import java.time.LocalDate;
 
 @Data
 public class OrderProductDTO {
-    int id;
-    @NotNull(message = "This Field cannot be null!")
-    Order order;
     @NotNull(message = "This Field cannot be null!")
     Product product;
     @NotNull(message = "This Field cannot be null!")
     @Min(value = 0, message = "Please enter positive number!")
     double quantity;
-    double amount;
-    LocalDate dateCreated;
-    LocalDate dateUpdated;
 }

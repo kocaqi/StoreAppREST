@@ -32,6 +32,8 @@ public class ProductService {
     public ProductDTO create(ProductDTO productDTO){
         //convert DTO to entity
         Product product = maptoEntity(productDTO);
+        product.setDateCreated(LocalDate.now());
+        product.setDateUpdated(LocalDate.now());
         Product newProduct = productRepository.save(product);
 
         //convert entity to DTO
@@ -103,5 +105,9 @@ public class ProductService {
 
     public Product findProductById(int productId) {
         return productRepository.findById(productId).orElseThrow(()->new ResourceNotFoundException("Product", "id", productId));
+    }
+
+    public void save(Product product) {
+        productRepository.save(product);
     }
 }

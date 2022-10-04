@@ -11,7 +11,6 @@ import java.util.Set;
 
 @Data
 public class ProductDTO {
-    private int id;
     @NotEmpty(message = "This Field cannot be null!")
     private String name;
     @NotNull(message = "This Field cannot be null!")
@@ -20,7 +19,4 @@ public class ProductDTO {
     @NotNull(message = "This Field cannot be null!")
     @Min(value = 0, message = "Please enter positive number!")
     private double stock;
-    private LocalDate dateCreated;
-    private LocalDate dateUpdated;
-    private Set<OrderProduct> orders;
 }

@@ -36,21 +36,16 @@ public class OrderController {
 
     //create order
     @PostMapping("/create")
-    public ResponseEntity<OrderDTO> create(@Valid @RequestBody OrderDTO orderDTO,
-                                           Principal principal) {
-        orderDTO.setDateCreated(LocalDate.now());
-        orderDTO.setDateUpdated(LocalDate.now());
-        String email = principal.getName();
-        orderDTO.setUser(userService.findUserByEmail(email));
-        return new ResponseEntity<>(orderService.create(orderDTO), HttpStatus.CREATED);
+    public ResponseEntity<OrderDTO> create(@Valid @RequestBody OrderDTO orderDTO, Principal principal) {
+        return new ResponseEntity<>(orderService.create(orderDTO, principal), HttpStatus.CREATED);
     }
 
     //get all orders
     @GetMapping
     public Response<OrderDTO> getAll(@RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
-                           @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
-                           @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
-                           @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir) {
+                                     @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize,
+                                     @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
+                                     @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir) {
         return orderService.getAll(pageNo, pageSize, sortBy, sortDir);
     }
 
@@ -71,22 +66,21 @@ public class OrderController {
     @PostMapping("/{id}/addProduct")
     public ResponseEntity<OrderProductDTO> addProduct(@Valid @RequestBody OrderProductDTO orderProductDTO, @PathVariable("id") int orderId) {
         Order order = orderService.getOrderById(orderId);
-        orderProductDTO.setOrder(order);
         int productId = orderProductDTO.getProduct().getId();
         Product product = productService.findProductById(productId);
         orderProductDTO.setProduct(product);
 
         OrderProduct orderProduct = orderProductService.findByOrderAndProduct(orderId, productId);
         if (orderProduct == null) {
-            orderProductDTO.setDateCreated(LocalDate.now());
-            orderProductDTO.setDateUpdated(LocalDate.now());
-            orderProductDTO.setAmount(orderProductDTO.getQuantity() * orderProductDTO.getProduct().getPrice());
-            order.setAmount(order.getAmount() + orderProductDTO.getAmount());
+            order.setAmount(order.getAmount() + orderProductDTO.getQuantity()*orderProductDTO.getProduct().getPrice());
+            product.setStock(product.getStock() - orderProductDTO.getQuantity());
+            productService.save(product);
             orderService.save(order);
-            return new ResponseEntity<>(orderProductService.create(orderProductDTO), HttpStatus.CREATED);
-        }
-        else{
+            return new ResponseEntity<>(orderProductService.create(orderProductDTO, orderId), HttpStatus.CREATED);
+        } else {
             OrderProductDTO response = orderProductService.update(orderProductDTO, orderId, productId);
+            product.setStock(product.getStock() - orderProductDTO.getQuantity());
+            productService.save(product);
             return new ResponseEntity<>(response, HttpStatus.OK);
         }
     }

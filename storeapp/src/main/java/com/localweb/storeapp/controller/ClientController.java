@@ -29,12 +29,7 @@ public class ClientController {
     @PostMapping("/create")
     public ResponseEntity<ClientDTO> create(@Valid @RequestBody ClientDTO clientDTO,
                                                 Principal principal){
-        clientDTO.setDateCreated(LocalDate.now());
-        clientDTO.setDateUpdated(LocalDate.now());
-        String email = principal.getName();
-        User user = userService.findUserByEmail(email);
-        clientDTO.setTheUser(user);
-        return new ResponseEntity<>(clientService.create(clientDTO), HttpStatus.CREATED);
+        return new ResponseEntity<>(clientService.create(clientDTO, principal), HttpStatus.CREATED);
     }
 
     //get all clients
