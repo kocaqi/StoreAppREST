@@ -46,13 +46,13 @@ public class UserService{
         user.setEnabled(1);
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        user.setRoles(userDTO.getRoles());
+        //user.setRoles(userDTO.getRolesIds());
 
-        /*List<Role> roles = userDTO.getRoles();
-        for (Role role : roles) {
-            role = roleRepository.findById(role.getId()).orElseThrow(()->new UsernameNotFoundException("Role with not found!"));
+        List<Integer> roles = userDTO.getRolesIds();
+        for (int roleId : roles) {
+            Role role = roleRepository.findById(roleId).orElseThrow(()->new UsernameNotFoundException("Role with not found!"));
             user.addRole(role);
-        }*/
+        }
 
         User newUser = userRepository.save(user);
 
@@ -88,34 +88,10 @@ public class UserService{
     }
 
     private UserDTO mapToDTO(User newUser){
-        UserDTO userDTO = modelMapper.map(newUser, UserDTO.class);
-        /*UserDTO userResponse = new UserDTO();
-        userResponse.setId(newUser.getId());
-        userResponse.setFirstName(newUser.getFirstName());
-        userResponse.setLastName(newUser.getLastName());
-        userResponse.setEmail(newUser.getEmail());
-        userResponse.setPassword(newUser.getPassword());
-        userResponse.setDateCreated(newUser.getDateCreated());
-        userResponse.setDateUpdated(newUser.getDateUpdated());
-        userResponse.setRoles(newUser.getRoles());
-        userResponse.setEnabled(newUser.getEnabled());
-        userResponse.setClients(newUser.getClients());
-        userResponse.setOrders(newUser.getOrders());*/
-        return userDTO;
+        return modelMapper.map(newUser, UserDTO.class);
     }
 
     private User mapToEntity(UserDTO userDTO){
-        /*User user = new User();
-        user.setFirstName(userDTO.getFirstName());
-        user.setLastName(userDTO.getLastName());
-        user.setEmail(userDTO.getEmail());
-        user.setPassword(userDTO.getPassword());
-        user.setDateCreated(userDTO.getDateCreated());
-        user.setDateUpdated(userDTO.getDateUpdated());
-        user.setRoles(userDTO.getRoles());
-        user.setEnabled(userDTO.getEnabled());
-        user.setClients(userDTO.getClients());
-        user.setOrders(userDTO.getOrders());*/
         return modelMapper.map(userDTO, User.class);
     }
 
@@ -132,7 +108,12 @@ public class UserService{
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         user.setDateUpdated(LocalDate.now());
-        user.setRoles(userDTO.getRoles());
+        user.getRoles().clear();
+        List<Integer> roles = userDTO.getRolesIds();
+        for (int roleId : roles) {
+            Role role = roleRepository.findById(roleId).orElseThrow(()->new UsernameNotFoundException("Role with not found!"));
+            user.addRole(role);
+        }
         User updatedUser = userRepository.save(user);
 
         return mapToDTO(updatedUser);

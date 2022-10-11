@@ -1,5 +1,6 @@
 package com.localweb.storeapp.payload.entityDTO;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.localweb.storeapp.entity.OrderProduct;
 import lombok.Data;
 
@@ -11,6 +12,8 @@ import java.util.Set;
 
 @Data
 public class ProductDTO {
+    @JsonIgnore
+    int id;
     @NotEmpty(message = "This Field cannot be null!")
     private String name;
     @NotNull(message = "This Field cannot be null!")

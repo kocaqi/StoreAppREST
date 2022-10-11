@@ -6,12 +6,15 @@ import com.localweb.storeapp.entity.Product;
 import com.localweb.storeapp.payload.entityDTO.OrderDTO;
 import com.localweb.storeapp.payload.entityDTO.OrderProductDTO;
 import com.localweb.storeapp.payload.Response;
+import com.localweb.storeapp.payload.entityDTO.ProductDTO;
 import com.localweb.storeapp.service.OrderProductService;
 import com.localweb.storeapp.service.OrderService;
 import com.localweb.storeapp.service.ProductService;
 import com.localweb.storeapp.service.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -26,18 +29,21 @@ public class OrderController {
     UserService userService;
     OrderProductService orderProductService;
     ProductService productService;
+    ModelMapper modelMapper;
 
-    public OrderController(OrderService orderService, UserService userService, OrderProductService orderProductService, ProductService productService) {
+    public OrderController(OrderService orderService, UserService userService, OrderProductService orderProductService,
+                           ProductService productService, ModelMapper modelMapper) {
         this.orderService = orderService;
         this.userService = userService;
         this.orderProductService = orderProductService;
         this.productService = productService;
+        this.modelMapper = modelMapper;
     }
 
     //create order
     @PostMapping("/create")
-    public ResponseEntity<OrderDTO> create(@Valid @RequestBody OrderDTO orderDTO, Principal principal) {
-        return new ResponseEntity<>(orderService.create(orderDTO, principal), HttpStatus.CREATED);
+    public ResponseEntity<String> create(int clientId, Principal principal) {
+        return new ResponseEntity<>(orderService.create(clientId, principal), HttpStatus.CREATED);
     }
 
     //get all orders
@@ -66,9 +72,9 @@ public class OrderController {
     @PostMapping("/{id}/addProduct")
     public ResponseEntity<OrderProductDTO> addProduct(@Valid @RequestBody OrderProductDTO orderProductDTO, @PathVariable("id") int orderId) {
         Order order = orderService.getOrderById(orderId);
-        int productId = orderProductDTO.getProduct().getId();
-        Product product = productService.findProductById(productId);
-        orderProductDTO.setProduct(product);
+        ProductDTO productDTO = orderProductDTO.getProduct();
+        Product product = modelMapper.map(productDTO, Product.class);
+        int productId = product.getId();
 
         OrderProduct orderProduct = orderProductService.findByOrderAndProduct(orderId, productId);
         if (orderProduct == null) {

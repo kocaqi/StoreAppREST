@@ -1,5 +1,6 @@
 package com.localweb.storeapp.payload.entityDTO;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.localweb.storeapp.entity.Order;
 import com.localweb.storeapp.entity.Product;
 import lombok.Data;
@@ -11,8 +12,10 @@ import java.time.LocalDate;
 
 @Data
 public class OrderProductDTO {
+    @JsonIgnore
+    int id;
     @NotNull(message = "This Field cannot be null!")
-    Product product;
+    ProductDTO product;
     @NotNull(message = "This Field cannot be null!")
     @Min(value = 0, message = "Please enter positive number!")
     double quantity;

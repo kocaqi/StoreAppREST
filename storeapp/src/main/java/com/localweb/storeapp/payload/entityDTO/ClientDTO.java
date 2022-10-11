@@ -1,15 +1,19 @@
 package com.localweb.storeapp.payload.entityDTO;
 
-import com.localweb.storeapp.entity.Order;
-import com.localweb.storeapp.entity.User;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
-import java.time.LocalDate;
-import java.util.List;
 
 @Data
+@JsonIdentityReference(alwaysAsId=true)
+@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class ClientDTO {
+    @JsonIgnore
+    int id;
     @NotEmpty(message = "This Field cannot be null!")
     private String firstName;
     @NotEmpty(message = "This Field cannot be null!")

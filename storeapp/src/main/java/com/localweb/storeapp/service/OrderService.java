@@ -1,16 +1,20 @@
 package com.localweb.storeapp.service;
 
+import com.localweb.storeapp.entity.Client;
 import com.localweb.storeapp.entity.Order;
 import com.localweb.storeapp.exception.ResourceNotFoundException;
 import com.localweb.storeapp.payload.entityDTO.OrderDTO;
 import com.localweb.storeapp.payload.Response;
+import com.localweb.storeapp.repository.ClientRepository;
 import com.localweb.storeapp.repository.OrderRepository;
+import com.localweb.storeapp.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
@@ -23,29 +27,35 @@ public class OrderService {
 
     OrderRepository orderRepository;
     ModelMapper modelMapper;
-    UserService userService;
+    UserRepository userRepository;
+    ClientRepository clientRepository;
 
     @Autowired
-    public OrderService(OrderRepository orderRepository, ModelMapper modelMapper, UserService userService) {
+    public OrderService(OrderRepository orderRepository, ModelMapper modelMapper, UserRepository userRepository, ClientRepository clientRepository) {
         this.orderRepository = orderRepository;
         this.modelMapper = modelMapper;
-        this.userService = userService;
+        this.userRepository = userRepository;
+        this.clientRepository = clientRepository;
     }
 
-    public OrderDTO create(OrderDTO orderDTO, Principal principal){
+    public String create(int clientId, Principal principal) {
         //convert DTO to entity
-        Order order = mapToEntity(orderDTO);
+        Order order = new Order();
+        Client client = clientRepository.findById(clientId).orElseThrow(
+                () -> new ResourceNotFoundException("Client", "id", clientId));
+        order.setClient_id(client);
         order.setDateCreated(LocalDate.now());
         order.setDateUpdated(LocalDate.now());
         String email = principal.getName();
-        order.setUser(userService.findUserByEmail(email));
+        order.setUser(userRepository.findUserByEmail(email).orElseThrow(()->new UsernameNotFoundException("User with email "+email+" not found!" )));
+        order.setAmount(0);
         Order newOrder = orderRepository.save(order);
 
         //convert entity to DTO
-        return mapToDTO(newOrder);
+        return "U kry!";
     }
 
-    public Response<OrderDTO> getAll(int pageNo, int pageSize, String sortBy, String sortDir){
+    public Response<OrderDTO> getAll(int pageNo, int pageSize, String sortBy, String sortDir) {
 
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
@@ -68,7 +78,7 @@ public class OrderService {
         return orderResponse;
     }
 
-    private OrderDTO mapToDTO(Order newOrder){
+    private OrderDTO mapToDTO(Order newOrder) {
         /*OrderDTO orderRespose = new OrderDTO();
         orderRespose.setId(newOrder.getId());
         orderRespose.setUser(newOrder.getUser());
@@ -80,7 +90,7 @@ public class OrderService {
         return modelMapper.map(newOrder, OrderDTO.class);
     }
 
-    private Order mapToEntity(OrderDTO orderDTO){
+    private Order mapToEntity(OrderDTO orderDTO) {
         /*Order order = new Order();
         order.setUser(orderDTO.getUser());
         order.setOrderProducts(orderDTO.getOrderProducts());
@@ -92,19 +102,19 @@ public class OrderService {
     }
 
     public OrderDTO getById(int id) {
-        Order order = orderRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Order", "id", id));
+        Order order = orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Order", "id", id));
         return mapToDTO(order);
     }
 
     public OrderDTO update(OrderDTO orderDTO, int id) {
-        Order order = orderRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Order", "id", id));
+        Order order = orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Order", "id", id));
         order.setDateUpdated(LocalDate.now());
         Order updatedOrder = orderRepository.save(order);
         return mapToDTO(updatedOrder);
     }
 
     public Order getOrderById(int id) {
-        return orderRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Order", "id", id));
+        return orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Order", "id", id));
     }
 
     public void save(Order order) {
