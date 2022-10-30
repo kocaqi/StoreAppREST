@@ -45,17 +45,7 @@ public class AppConfig {
     	comboPooledDataSource.setJdbcUrl(environment.getProperty("jdbc.url"));
     	comboPooledDataSource.setUser(environment.getProperty("jdbc.user"));
     	comboPooledDataSource.setPassword(environment.getProperty("jdbc.password"));
-    	
-    	comboPooledDataSource.setInitialPoolSize(Integer.parseInt(
-                environment.getProperty("connection.pool.initialPoolSize")));
-    	comboPooledDataSource.setMinPoolSize(Integer.parseInt(
-				environment.getProperty("connection.pool.minPoolSize")));
-    	comboPooledDataSource.setMaxPoolSize(Integer.parseInt(
-				environment.getProperty("connection.pool.maxPoolSize")));
-    	comboPooledDataSource.setMaxIdleTime(Integer.parseInt(
-				environment.getProperty("connection.pool.maxIdleTime")));
 
-    	
     	return comboPooledDataSource;
     }
 
