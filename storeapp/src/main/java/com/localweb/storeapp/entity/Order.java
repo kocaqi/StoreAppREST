@@ -16,7 +16,7 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private long id;
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name="user_id", nullable = false)
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -41,7 +41,7 @@ public class Order {
     public Order() {
     }
 
-    public Order(int id, User user, Client client_id, double amount, LocalDate dateCreated, LocalDate dateUpdated, List<OrderProduct> orderProducts) {
+    public Order(long id, User user, Client client_id, double amount, LocalDate dateCreated, LocalDate dateUpdated, List<OrderProduct> orderProducts) {
         this.id = id;
         this.user = user;
         this.client_id = client_id;
@@ -51,11 +51,11 @@ public class Order {
         this.orderProducts = orderProducts;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

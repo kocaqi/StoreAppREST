@@ -16,7 +16,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private long id;
     @Column(name = "name", nullable = false)
     private String name;
     @Column(name = "price", nullable = false)
@@ -35,7 +35,7 @@ public class Product {
     public Product() {
     }
 
-    public Product(int id, String name, double price, double stock, LocalDate dateCreated, LocalDate dateUpdated, Set<OrderProduct> orders) {
+    public Product(long id, String name, double price, double stock, LocalDate dateCreated, LocalDate dateUpdated, Set<OrderProduct> orders) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -45,11 +45,11 @@ public class Product {
         this.orders = orders;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

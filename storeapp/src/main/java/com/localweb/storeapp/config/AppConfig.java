@@ -17,13 +17,15 @@ import java.beans.PropertyVetoException;
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = "com.localweb.storeapp")
-@PropertySource("classpath:persistence-mysql.properties")
+@PropertySource("classpath:application.properties")
 public class AppConfig {
-	
+	private final Environment environment;
 	@Autowired
-	private Environment environment;
+	public AppConfig(Environment environment) {
+		this.environment = environment;
+	}
 
-    @Bean
+	@Bean
     public ViewResolver viewResolver(){
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
         viewResolver.setPrefix("/WEB-INF/view/");

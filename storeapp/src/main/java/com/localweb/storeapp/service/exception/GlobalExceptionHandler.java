@@ -1,7 +1,6 @@
-package com.localweb.storeapp.exception;
+package com.localweb.storeapp.service.exception;
 
 import com.localweb.storeapp.payload.ErrorDetails;
-import org.springframework.boot.autoconfigure.mail.MailProperties;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import javax.persistence.MapsId;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;

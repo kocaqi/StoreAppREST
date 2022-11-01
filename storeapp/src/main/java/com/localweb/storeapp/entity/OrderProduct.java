@@ -13,7 +13,7 @@ public class OrderProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    int id;
+    long id;
     @ManyToOne
     @JoinColumn(name = "order_id", nullable = false)
     @JsonIgnore
@@ -57,11 +57,11 @@ public class OrderProduct {
         this.dateUpdated = dateUpdated;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

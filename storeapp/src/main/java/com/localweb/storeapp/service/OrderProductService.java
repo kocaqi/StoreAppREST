@@ -16,16 +16,14 @@ import java.time.LocalDate;
 @Service
 public class OrderProductService {
 
-    OrderProductRepository orderProductRepository;
-    OrderRepository orderRepository;
-    ProductRepository productRepository;
-    private ModelMapper modelMapper;
+    private final OrderProductRepository orderProductRepository;
+    private final OrderRepository orderRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public OrderProductService(OrderProductRepository orderProductRepository, OrderRepository orderRepository, ProductRepository productRepository, ModelMapper modelMapper) {
+    public OrderProductService(OrderProductRepository orderProductRepository, OrderRepository orderRepository, ModelMapper modelMapper) {
         this.orderProductRepository = orderProductRepository;
         this.orderRepository = orderRepository;
-        this.productRepository = productRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -38,8 +36,7 @@ public class OrderProductService {
         orderProduct.setOrder(order);
         OrderProduct newOrderProduct = orderProductRepository.save(orderProduct);
 
-        OrderProductDTO orderProductResponse = mapToDTO(newOrderProduct);
-        return orderProductResponse;
+        return mapToDTO(newOrderProduct);
     }
 
     private OrderProductDTO mapToDTO(OrderProduct newOrderProduct){
@@ -55,11 +52,11 @@ public class OrderProductService {
         orderProductRepository.delete(orderProduct);
     }
 
-    public OrderProduct findByOrderAndProduct(int orderId, int productId) {
+    public OrderProduct findByOrderAndProduct(long orderId, long productId) {
         return orderProductRepository.findByOrderAndProduct(orderId, productId);
     }
 
-    public OrderProductDTO update(OrderProductDTO orderProductDTO, int orderId, int productId) {
+    public OrderProductDTO update(OrderProductDTO orderProductDTO, long orderId, long productId) {
         OrderProduct orderProduct = orderProductRepository.findByOrderAndProduct(orderId, productId);
         Order order = orderRepository.findOrderById(orderId);
         order.setAmount(order.getAmount()+orderProductDTO.getQuantity()*orderProduct.getProduct().getPrice());

@@ -1,10 +1,11 @@
-package com.localweb.storeapp.exception;
+package com.localweb.storeapp.service.exception;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 public class StoreAPIException extends RuntimeException{
-    private HttpStatus httpStatus;
-    private String message;
+    private final HttpStatus httpStatus;
+    private final String message;
 
     public StoreAPIException(HttpStatus httpStatus, String message) {
         this.httpStatus = httpStatus;

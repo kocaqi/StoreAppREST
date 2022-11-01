@@ -12,6 +12,7 @@ import com.localweb.storeapp.service.OrderService;
 import com.localweb.storeapp.service.ProductService;
 import com.localweb.storeapp.service.UserService;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -25,16 +26,15 @@ import java.time.LocalDate;
 @RequestMapping("/api/orders")
 public class OrderController {
 
-    OrderService orderService;
-    UserService userService;
-    OrderProductService orderProductService;
-    ProductService productService;
-    ModelMapper modelMapper;
+    private final OrderService orderService;
+    private final OrderProductService orderProductService;
+    private final ProductService productService;
+    private final ModelMapper modelMapper;
 
-    public OrderController(OrderService orderService, UserService userService, OrderProductService orderProductService,
+    @Autowired
+    public OrderController(OrderService orderService, OrderProductService orderProductService,
                            ProductService productService, ModelMapper modelMapper) {
         this.orderService = orderService;
-        this.userService = userService;
         this.orderProductService = orderProductService;
         this.productService = productService;
         this.modelMapper = modelMapper;
@@ -74,7 +74,7 @@ public class OrderController {
         Order order = orderService.getOrderById(orderId);
         ProductDTO productDTO = orderProductDTO.getProduct();
         Product product = modelMapper.map(productDTO, Product.class);
-        int productId = product.getId();
+        long productId = product.getId();
 
         OrderProduct orderProduct = orderProductService.findByOrderAndProduct(orderId, productId);
         if (orderProduct == null) {

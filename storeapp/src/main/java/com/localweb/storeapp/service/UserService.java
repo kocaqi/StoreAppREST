@@ -2,7 +2,7 @@ package com.localweb.storeapp.service;
 
 import com.localweb.storeapp.entity.Role;
 import com.localweb.storeapp.entity.User;
-import com.localweb.storeapp.exception.ResourceNotFoundException;
+import com.localweb.storeapp.service.exception.ResourceNotFoundException;
 import com.localweb.storeapp.payload.entityDTO.UserDTO;
 import com.localweb.storeapp.payload.Response;
 import com.localweb.storeapp.repository.RoleRepository;
@@ -26,9 +26,9 @@ import java.util.stream.Collectors;
 @Service
 public class UserService{
 
-    private UserRepository userRepository;
-    private RoleRepository roleRepository;
-    private ModelMapper modelMapper;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final ModelMapper modelMapper;
 
 
     @Autowired

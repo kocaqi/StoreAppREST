@@ -1,7 +1,7 @@
 package com.localweb.storeapp.service;
 
 import com.localweb.storeapp.entity.Product;
-import com.localweb.storeapp.exception.ResourceNotFoundException;
+import com.localweb.storeapp.service.exception.ResourceNotFoundException;
 import com.localweb.storeapp.payload.entityDTO.ProductDTO;
 import com.localweb.storeapp.payload.Response;
 import com.localweb.storeapp.repository.ProductRepository;
@@ -20,8 +20,8 @@ import java.util.stream.Collectors;
 @Service
 public class ProductService {
 
-    private ProductRepository productRepository;
-    private ModelMapper modelMapper;
+    private final ProductRepository productRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
     public ProductService(ProductRepository productRepository, ModelMapper modelMapper) {

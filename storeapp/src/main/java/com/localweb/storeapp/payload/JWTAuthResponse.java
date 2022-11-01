@@ -1,5 +1,7 @@
 package com.localweb.storeapp.payload;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 public class JWTAuthResponse {
 
     private String accessToken;

@@ -1,6 +1,6 @@
 package com.localweb.storeapp.security;
 
-import com.localweb.storeapp.exception.StoreAPIException;
+import com.localweb.storeapp.service.exception.StoreAPIException;
 import io.jsonwebtoken.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.beans.factory.annotation.Value;

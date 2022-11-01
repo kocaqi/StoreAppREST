@@ -5,6 +5,7 @@ import com.localweb.storeapp.payload.entityDTO.ClientDTO;
 import com.localweb.storeapp.payload.Response;
 import com.localweb.storeapp.service.ClientService;
 import com.localweb.storeapp.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,12 +18,11 @@ import java.time.LocalDate;
 @RequestMapping("/api/clients")
 public class ClientController {
 
-    ClientService clientService;
-    UserService userService;
+    private final ClientService clientService;
 
-    public ClientController(ClientService clientService, UserService userService) {
+    @Autowired
+    public ClientController(ClientService clientService) {
         this.clientService = clientService;
-        this.userService = userService;
     }
 
     //create client

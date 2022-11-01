@@ -1,13 +1,14 @@
-package com.localweb.storeapp.exception;
+package com.localweb.storeapp.service.exception;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.NOT_FOUND)
 public class ResourceNotFoundException extends RuntimeException{
-    private String resourceName;
-    private String fieldName;
-    private int fieldValue;
+    private final String resourceName;
+    private final String fieldName;
+    private final int fieldValue;
 
     public ResourceNotFoundException(String resourceName, String fieldName, int fieldValue) {
         super(String.format("%s with %s %d not found!", resourceName, fieldName, fieldValue));

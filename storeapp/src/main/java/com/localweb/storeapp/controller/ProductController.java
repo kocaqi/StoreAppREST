@@ -3,6 +3,7 @@ package com.localweb.storeapp.controller;
 import com.localweb.storeapp.payload.entityDTO.ProductDTO;
 import com.localweb.storeapp.payload.Response;
 import com.localweb.storeapp.service.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +15,9 @@ import java.time.LocalDate;
 @RequestMapping("/api/products")
 public class ProductController {
 
-    private ProductService productService;
+    private final ProductService productService;
 
+    @Autowired
     public ProductController(ProductService productService) {
         this.productService = productService;
     }

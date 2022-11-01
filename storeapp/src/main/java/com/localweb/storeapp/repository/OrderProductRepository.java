@@ -13,5 +13,5 @@ import java.util.List;
 @Repository
 public interface OrderProductRepository  extends JpaRepository<OrderProduct, OrderProductKey> {
     @Query("select p from OrderProduct p where p.order.id=?1 and p.product.id=?2")
-    OrderProduct findByOrderAndProduct(int orderId, int productId);
+    OrderProduct findByOrderAndProduct(long orderId, long productId);
 }

@@ -8,30 +8,30 @@ import java.util.Objects;
 @Embeddable
 public class OrderProductKey implements Serializable {
 
-    int order_id;
-    int product_id;
+    long order_id;
+    long product_id;
 
     public OrderProductKey() {
     }
 
-    public OrderProductKey(int order_id, int product_id) {
+    public OrderProductKey(long order_id, long product_id) {
         this.order_id = order_id;
         this.product_id = product_id;
     }
 
-    public int getOrder_id() {
+    public long getOrder_id() {
         return order_id;
     }
 
-    public void setOrder_id(int order) {
+    public void setOrder_id(long order) {
         this.order_id = order;
     }
 
-    public int getProduct_id() {
+    public long getProduct_id() {
         return product_id;
     }
 
-    public void setProduct_id(int product) {
+    public void setProduct_id(long product) {
         this.product_id = product;
     }
 

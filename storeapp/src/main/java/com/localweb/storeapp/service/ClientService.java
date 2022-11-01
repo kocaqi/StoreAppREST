@@ -2,7 +2,7 @@ package com.localweb.storeapp.service;
 
 import com.localweb.storeapp.entity.Client;
 import com.localweb.storeapp.entity.User;
-import com.localweb.storeapp.exception.ResourceNotFoundException;
+import com.localweb.storeapp.service.exception.ResourceNotFoundException;
 import com.localweb.storeapp.payload.entityDTO.ClientDTO;
 import com.localweb.storeapp.payload.Response;
 import com.localweb.storeapp.repository.ClientRepository;
@@ -24,9 +24,9 @@ import java.util.stream.Collectors;
 @Service
 public class ClientService {
 
-    private ClientRepository clientRepository;
-    private UserRepository userRepository;
-    private ModelMapper modelMapper;
+    private final ClientRepository clientRepository;
+    private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
 
     @Autowired
     public ClientService(ClientRepository clientRepository, UserRepository userRepository, ModelMapper modelMapper) {
