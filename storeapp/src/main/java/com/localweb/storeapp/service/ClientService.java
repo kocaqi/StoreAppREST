@@ -37,7 +37,7 @@ public class ClientService {
 
     public ClientDTO create(ClientDTO clientDTO, Principal principal) {
         //convert DTO to entity
-        Client client = mapToEntity(clientDTO);
+        Client client = modelMapper.map(clientDTO, Client.class);
         client.setDateCreated(LocalDate.now());
         client.setDateUpdated(LocalDate.now());
         String email = principal.getName();
@@ -46,7 +46,7 @@ public class ClientService {
         Client newClient = clientRepository.save(client);
 
         //convert entity to DTO
-        return mapToDTO(newClient);
+        return modelMapper.map(newClient, ClientDTO.class);
     }
 
     public Response<ClientDTO> getAll(int pageNo, int pageSize, String sortBy, String sortDir) {
@@ -59,7 +59,7 @@ public class ClientService {
 
         List<Client> clientList = clients.getContent();
 
-        List<ClientDTO> content = clientList.stream().map(this::mapToDTO).collect(Collectors.toList());
+        List<ClientDTO> content = clientList.stream().map(client -> modelMapper.map(client, ClientDTO.class)).collect(Collectors.toList());
 
         Response<ClientDTO> postResponse = new Response<>();
         postResponse.setContent(content);
@@ -72,34 +72,9 @@ public class ClientService {
         return postResponse;
     }
 
-    private ClientDTO mapToDTO(Client newClient) {
-        /*ClientDTO clientResponse = new ClientDTO();
-        clientResponse.setId(newClient.getId());
-        clientResponse.setFirstName(newClient.getFirstName());
-        clientResponse.setLastName(newClient.getLastName());
-        clientResponse.setEmail(newClient.getEmail());
-        clientResponse.setTheUser(newClient.getTheUser());
-        clientResponse.setOrders(newClient.getOrders());
-        clientResponse.setDateCreated(newClient.getDateCreated());
-        clientResponse.setDateUpdated(newClient.getDateUpdated());*/
-        return modelMapper.map(newClient, ClientDTO.class);
-    }
-
-    private Client mapToEntity(ClientDTO clientDTO) {
-        /*Client client = new Client();
-        client.setFirstName(clientDTO.getFirstName());
-        client.setLastName(clientDTO.getLastName());
-        client.setEmail(clientDTO.getEmail());
-        client.setTheUser(clientDTO.getTheUser());
-        client.setOrders(clientDTO.getOrders());
-        client.setDateCreated(clientDTO.getDateCreated());
-        client.setDateUpdated(clientDTO.getDateUpdated());*/
-        return modelMapper.map(clientDTO, Client.class);
-    }
-
     public ClientDTO getById(int id) {
         Client client = clientRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Client", "id", id));
-        return mapToDTO(client);
+        return modelMapper.map(client, ClientDTO.class);
     }
 
     public ClientDTO update(ClientDTO clientDTO, int id) {
@@ -110,6 +85,6 @@ public class ClientService {
         client.setDateUpdated(LocalDate.now());
         Client updatedClient = clientRepository.save(client);
 
-        return mapToDTO(updatedClient);
+        return modelMapper.map(updatedClient, ClientDTO.class);
     }
 }

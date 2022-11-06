@@ -31,13 +31,13 @@ public class ProductService {
 
     public ProductDTO create(ProductDTO productDTO){
         //convert DTO to entity
-        Product product = maptoEntity(productDTO);
+        Product product = modelMapper.map(productDTO, Product.class);
         product.setDateCreated(LocalDate.now());
         product.setDateUpdated(LocalDate.now());
         Product newProduct = productRepository.save(product);
 
         //convert entity to DTO
-        return mapToDTO(newProduct);
+        return modelMapper.map(newProduct, ProductDTO.class);
     }
 
     public Response<ProductDTO> getAll(int pageNo, int pageSize, String sortBy, String sortDir){
@@ -50,7 +50,7 @@ public class ProductService {
 
         List<Product> productList = products.getContent();
 
-        List<ProductDTO> content= productList.stream().map(post -> mapToDTO(post)).collect(Collectors.toList());
+        List<ProductDTO> content= productList.stream().map(product -> modelMapper.map(product, ProductDTO.class)).collect(Collectors.toList());
 
         Response<ProductDTO> productResponse = new Response<>();
         productResponse.setContent(content);
@@ -63,32 +63,9 @@ public class ProductService {
         return productResponse;
     }
 
-    private ProductDTO mapToDTO(Product newProduct){
-        /*ProductDTO productResponse = new ProductDTO();
-        productResponse.setId(newProduct.getId());
-        productResponse.setName(newProduct.getName());
-        productResponse.setPrice(newProduct.getPrice());
-        productResponse.setStock(newProduct.getStock());
-        productResponse.setOrders(newProduct.getOrders());
-        productResponse.setDateCreated(newProduct.getDateCreated());
-        productResponse.setDateUpdated(newProduct.getDateUpdated());*/
-        return modelMapper.map(newProduct, ProductDTO.class);
-    }
-
-    private Product maptoEntity(ProductDTO productDTO){
-        /*Product product = new Product();
-        product.setName(productDTO.getName());
-        product.setPrice(productDTO.getPrice());
-        product.setStock(productDTO.getStock());
-        product.setDateCreated(productDTO.getDateCreated());
-        product.setDateUpdated(productDTO.getDateUpdated());
-        product.setOrders(productDTO.getOrders());*/
-        return modelMapper.map(productDTO, Product.class);
-    }
-
     public ProductDTO getById(int id) {
         Product product = productRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Product", "id", id));
-        return mapToDTO(product);
+        return modelMapper.map(product, ProductDTO.class);
     }
 
     public ProductDTO update(ProductDTO productDTO, int id) {
@@ -100,11 +77,7 @@ public class ProductService {
 
         Product updatedProduct = productRepository.save(product);
 
-        return mapToDTO(updatedProduct);
-    }
-
-    public Product findProductById(int productId) {
-        return productRepository.findById(productId).orElseThrow(()->new ResourceNotFoundException("Product", "id", productId));
+        return modelMapper.map(updatedProduct, ProductDTO.class);
     }
 
     public void save(Product product) {

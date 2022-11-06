@@ -65,7 +65,7 @@ public class OrderService {
 
         List<Order> orderList = orders.getContent();
 
-        List<OrderDTO> content = orderList.stream().map(this::mapToDTO).collect(Collectors.toList());
+        List<OrderDTO> content = orderList.stream().map(order -> modelMapper.map(order, OrderDTO.class)).collect(Collectors.toList());
 
         Response<OrderDTO> orderResponse = new Response<>();
         orderResponse.setContent(content);
@@ -78,39 +78,16 @@ public class OrderService {
         return orderResponse;
     }
 
-    private OrderDTO mapToDTO(Order newOrder) {
-        /*OrderDTO orderRespose = new OrderDTO();
-        orderRespose.setId(newOrder.getId());
-        orderRespose.setUser(newOrder.getUser());
-        orderRespose.setOrderProducts(newOrder.getOrderProducts());
-        orderRespose.setAmount(newOrder.getAmount());
-        orderRespose.setClient_id(newOrder.getClient_id());
-        orderRespose.setDateCreated(newOrder.getDateCreated());
-        orderRespose.setDateUpdated(newOrder.getDateUpdated());*/
-        return modelMapper.map(newOrder, OrderDTO.class);
-    }
-
-    private Order mapToEntity(OrderDTO orderDTO) {
-        /*Order order = new Order();
-        order.setUser(orderDTO.getUser());
-        order.setOrderProducts(orderDTO.getOrderProducts());
-        order.setAmount(orderDTO.getAmount());
-        order.setClient_id(orderDTO.getClient_id());
-        order.setDateCreated(orderDTO.getDateCreated());
-        order.setDateUpdated(orderDTO.getDateUpdated());*/
-        return modelMapper.map(orderDTO, Order.class);
-    }
-
     public OrderDTO getById(int id) {
         Order order = orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Order", "id", id));
-        return mapToDTO(order);
+        return modelMapper.map(order, OrderDTO.class);
     }
 
     public OrderDTO update(OrderDTO orderDTO, int id) {
         Order order = orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Order", "id", id));
         order.setDateUpdated(LocalDate.now());
         Order updatedOrder = orderRepository.save(order);
-        return mapToDTO(updatedOrder);
+        return modelMapper.map(updatedOrder, OrderDTO.class);
     }
 
     public Order getOrderById(int id) {

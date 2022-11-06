@@ -38,9 +38,9 @@ public class UserService{
         this.modelMapper = modelMapper;
     }
 
-    public UserDTO create(UserDTO userDTO){
+    public UserDTO create(UserDTO userDTO) {
         //convert DTO to entity
-        User user = mapToEntity(userDTO);
+        User user = modelMapper.map(userDTO, User.class);
         user.setDateCreated(LocalDate.now());
         user.setDateUpdated(LocalDate.now());
         user.setEnabled(1);
@@ -50,21 +50,17 @@ public class UserService{
 
         List<Integer> roles = userDTO.getRolesIds();
         for (int roleId : roles) {
-            Role role = roleRepository.findById(roleId).orElseThrow(()->new UsernameNotFoundException("Role with not found!"));
+            Role role = roleRepository.findById(roleId).orElseThrow(() -> new UsernameNotFoundException("Role with not found!"));
             user.addRole(role);
         }
 
         User newUser = userRepository.save(user);
 
         //convert entity to DTO
-        return mapToDTO(newUser);
+        return modelMapper.map(newUser, UserDTO.class);
     }
 
-    public User findUserByEmail(String email) {
-        return userRepository.findUserByEmail(email).orElseThrow(()->new UsernameNotFoundException("User with email "+email+" not found!"));
-    }
-
-    public Response<UserDTO> getAll(int pageNo, int pageSize, String sortBy, String sortDir){
+    public Response<UserDTO> getAll(int pageNo, int pageSize, String sortBy, String sortDir) {
 
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
@@ -74,7 +70,7 @@ public class UserService{
 
         List<User> userList = users.getContent();
 
-        List<UserDTO> content= userList.stream().map(this::mapToDTO).collect(Collectors.toList());
+        List<UserDTO> content = userList.stream().map(user -> modelMapper.map(user, UserDTO.class)).collect(Collectors.toList());
 
         Response<UserDTO> response = new Response<>();
         response.setContent(content);
@@ -87,17 +83,9 @@ public class UserService{
         return response;
     }
 
-    private UserDTO mapToDTO(User newUser){
-        return modelMapper.map(newUser, UserDTO.class);
-    }
-
-    private User mapToEntity(UserDTO userDTO){
-        return modelMapper.map(userDTO, User.class);
-    }
-
     public UserDTO getById(int id) {
         User user = userRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("User", "id", id));
-        return mapToDTO(user);
+        return modelMapper.map(user, UserDTO.class);
     }
 
     public UserDTO update(UserDTO userDTO, int id) {
@@ -116,7 +104,7 @@ public class UserService{
         }
         User updatedUser = userRepository.save(user);
 
-        return mapToDTO(updatedUser);
+        return modelMapper.map(updatedUser, UserDTO.class);
     }
 }
 
