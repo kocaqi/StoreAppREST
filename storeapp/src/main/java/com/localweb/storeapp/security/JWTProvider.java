@@ -16,6 +16,8 @@ public class JWTProvider {
     private String jwtSecret;
     @Value("${app.jwt-expiration-milliseconds}")
     private int jwtExpirationinMs;
+    @Value("${app.jwt-refresh-expiration-millisedonds}")
+    private int refreshExpirationMilliseconds;
 
     public String generateToken(Authentication authentication) {
         String email = authentication.getName();
@@ -36,6 +38,15 @@ public class JWTProvider {
                 .parseClaimsJws(token)
                 .getBody();
         return claims.getSubject();
+    }
+
+    public String generateRefreshToken(Authentication authentication){
+        return Jwts.builder()
+                .setSubject(authentication.getName())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + refreshExpirationMilliseconds))
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .compact();
     }
 
     public boolean validateToken(String token) {
