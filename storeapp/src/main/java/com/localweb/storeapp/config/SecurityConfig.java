@@ -2,41 +2,32 @@ package com.localweb.storeapp.config;
 
 import com.localweb.storeapp.security.JWTAuthenticationEntryPoint;
 import com.localweb.storeapp.security.JWTAuthenticationFilter;
-import com.localweb.storeapp.security.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
-	private final MyUserDetailsService userDetailsService;
+public class SecurityConfig {
 
 	private final JWTAuthenticationEntryPoint authenticationEntryPoint;
+	private final DataSource dataSource;
 
 	@Autowired
-	public SecurityConfig(MyUserDetailsService userDetailsService, JWTAuthenticationEntryPoint authenticationEntryPoint) {
-		this.userDetailsService = userDetailsService;
+	public SecurityConfig(JWTAuthenticationEntryPoint authenticationEntryPoint, DataSource dataSource) {
 		this.authenticationEntryPoint = authenticationEntryPoint;
-	}
-
-	public SecurityConfig(boolean disableDefaults, MyUserDetailsService userDetailsService, JWTAuthenticationEntryPoint authenticationEntryPoint) {
-		super(disableDefaults);
-		this.userDetailsService = userDetailsService;
-		this.authenticationEntryPoint = authenticationEntryPoint;
+		this.dataSource = dataSource;
 	}
 
 	@Bean
@@ -50,15 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	@Bean
-	public AuthenticationProvider authenticationProvider(){
-		DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-		authenticationProvider.setUserDetailsService(userDetailsService);
-		authenticationProvider.setPasswordEncoder(NoOpPasswordEncoder.getInstance());
-		return authenticationProvider;
-	}
-
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
+	protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.csrf().disable()
 				.exceptionHandling()
 				.authenticationEntryPoint(authenticationEntryPoint)
@@ -84,22 +67,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.formLogin()
 				.usernameParameter("email")
 				.passwordParameter("password")
+				.defaultSuccessUrl("/api/orders", true)
 			.and()
 				.logout()
 				.logoutSuccessUrl("/login");
 		http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+		return http.build();
 	}
 
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService)
-				.passwordEncoder(passwordEncoder());
-	}
-
-	@Override
 	@Bean
-	public AuthenticationManager authenticationManagerBean() throws Exception {
-		return super.authenticationManagerBean();
+	AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+		return authenticationConfiguration.getAuthenticationManager();
 	}
 }
 

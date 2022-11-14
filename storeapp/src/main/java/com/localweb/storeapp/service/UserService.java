@@ -29,13 +29,15 @@ public class UserService{
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final ModelMapper modelMapper;
+    private final PasswordEncoder passwordEncoder;
 
 
     @Autowired
-    public UserService(UserRepository userRepository, RoleRepository roleRepository, ModelMapper modelMapper){
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.modelMapper = modelMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public UserDTO create(UserDTO userDTO) {
@@ -44,7 +46,6 @@ public class UserService{
         user.setDateCreated(LocalDate.now());
         user.setDateUpdated(LocalDate.now());
         user.setEnabled(1);
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         //user.setRoles(userDTO.getRolesIds());
 
