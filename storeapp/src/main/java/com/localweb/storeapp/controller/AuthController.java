@@ -37,15 +37,17 @@ public class AuthController {
             throw new Exception("INVALID_CREDENTIALS", e);
         }
 
-        String token = provider.generateToken(authentication);
-        return ResponseEntity.ok(new JWTAuthResponse(token));
+        String accessToken = provider.generateToken(authentication);
+        String refreshToken = provider.generateRefreshToken(authentication);
+        return ResponseEntity.ok(new JWTAuthResponse(accessToken, refreshToken));
     }
 
     @GetMapping("/refreshToken")
     public ResponseEntity<?> refreshToken() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String token = provider.generateRefreshToken(authentication);
-        return ResponseEntity.ok(new JWTAuthResponse(token));
+        String accessToken = provider.generateToken(authentication);
+        String refreshToken = provider.generateRefreshToken(authentication);
+        return ResponseEntity.ok(new JWTAuthResponse(accessToken, refreshToken));
     }
 
 }
