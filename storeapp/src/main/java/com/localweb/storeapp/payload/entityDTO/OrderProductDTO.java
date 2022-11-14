@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Data
 public class OrderProductDTO {
     @JsonIgnore
-    int id;
+    long id;
     @NotNull(message = "This Field cannot be null!")
     ProductDTO product;
     @NotNull(message = "This Field cannot be null!")

@@ -50,8 +50,8 @@ public class UserService{
         //user.setRoles(userDTO.getRolesIds());
 
         List<Integer> roles = userDTO.getRolesIds();
-        for (int roleId : roles) {
-            Role role = roleRepository.findById(roleId).orElseThrow(() -> new UsernameNotFoundException("Role with not found!"));
+        for (long roleId : roles) {
+            Role role = roleRepository.findById((int) roleId).orElseThrow(() -> new UsernameNotFoundException("Role with not found!"));
             user.addRole(role);
         }
 
@@ -84,13 +84,13 @@ public class UserService{
         return response;
     }
 
-    public UserDTO getById(int id) {
-        User user = userRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("User", "id", id));
+    public UserDTO getById(long id) {
+        User user = userRepository.findById((int) id).orElseThrow(()->new ResourceNotFoundException("User", "id", id));
         return modelMapper.map(user, UserDTO.class);
     }
 
-    public UserDTO update(UserDTO userDTO, int id) {
-        User user = userRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("User", "id", id));
+    public UserDTO update(UserDTO userDTO, long id) {
+        User user = userRepository.findById((int) id).orElseThrow(()->new ResourceNotFoundException("User", "id", id));
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
         user.setEmail(userDTO.getEmail());
@@ -99,8 +99,8 @@ public class UserService{
         user.setDateUpdated(LocalDate.now());
         user.getRoles().clear();
         List<Integer> roles = userDTO.getRolesIds();
-        for (int roleId : roles) {
-            Role role = roleRepository.findById(roleId).orElseThrow(()->new UsernameNotFoundException("Role with not found!"));
+        for (long roleId : roles) {
+            Role role = roleRepository.findById((int) roleId).orElseThrow(()->new UsernameNotFoundException("Role with not found!"));
             user.addRole(role);
         }
         User updatedUser = userRepository.save(user);

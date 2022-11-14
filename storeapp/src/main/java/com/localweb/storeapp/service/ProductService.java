@@ -63,13 +63,13 @@ public class ProductService {
         return productResponse;
     }
 
-    public ProductDTO getById(int id) {
-        Product product = productRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Product", "id", id));
+    public ProductDTO getById(long id) {
+        Product product = productRepository.findById((int) id).orElseThrow(()->new ResourceNotFoundException("Product", "id", id));
         return modelMapper.map(product, ProductDTO.class);
     }
 
-    public ProductDTO update(ProductDTO productDTO, int id) {
-        Product product = productRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Product", "id", id));
+    public ProductDTO update(ProductDTO productDTO, long id) {
+        Product product = productRepository.findById((int) id).orElseThrow(()->new ResourceNotFoundException("Product", "id", id));
         product.setName(productDTO.getName());
         product.setPrice(productDTO.getPrice());
         product.setStock(productDTO.getStock());

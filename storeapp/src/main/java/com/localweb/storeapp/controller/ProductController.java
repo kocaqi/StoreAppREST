@@ -39,13 +39,13 @@ public class ProductController {
 
     //get product by id
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDTO> getById(@PathVariable(name = "id") int id){
+    public ResponseEntity<ProductDTO> getById(@PathVariable(name = "id") long id){
         return new ResponseEntity<>(productService.getById(id), HttpStatus.OK);
     }
 
     //update product
     @PutMapping("/update/{id}")
-    public ResponseEntity<ProductDTO> update(@Valid @RequestBody ProductDTO productDTO, @PathVariable(name = "id") int id){
+    public ResponseEntity<ProductDTO> update(@Valid @RequestBody ProductDTO productDTO, @PathVariable(name = "id") long id){
         ProductDTO productResponse = productService.update(productDTO, id);
         return new ResponseEntity<>(productResponse, HttpStatus.OK);
     }

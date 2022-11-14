@@ -38,10 +38,10 @@ public class OrderService {
         this.clientRepository = clientRepository;
     }
 
-    public String create(int clientId, Principal principal) {
+    public String create(long clientId, Principal principal) {
         //convert DTO to entity
         Order order = new Order();
-        Client client = clientRepository.findById(clientId).orElseThrow(
+        Client client = clientRepository.findById((int) clientId).orElseThrow(
                 () -> new ResourceNotFoundException("Client", "id", clientId));
         order.setClient_id(client);
         order.setDateCreated(LocalDate.now());
@@ -78,20 +78,20 @@ public class OrderService {
         return orderResponse;
     }
 
-    public OrderDTO getById(int id) {
-        Order order = orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Order", "id", id));
+    public OrderDTO getById(long id) {
+        Order order = orderRepository.findById((int) id).orElseThrow(() -> new ResourceNotFoundException("Order", "id", id));
         return modelMapper.map(order, OrderDTO.class);
     }
 
-    public OrderDTO update(OrderDTO orderDTO, int id) {
-        Order order = orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Order", "id", id));
+    public OrderDTO update(OrderDTO orderDTO, long id) {
+        Order order = orderRepository.findById((int) id).orElseThrow(() -> new ResourceNotFoundException("Order", "id", id));
         order.setDateUpdated(LocalDate.now());
         Order updatedOrder = orderRepository.save(order);
         return modelMapper.map(updatedOrder, OrderDTO.class);
     }
 
-    public Order getOrderById(int id) {
-        return orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Order", "id", id));
+    public Order getOrderById(long id) {
+        return orderRepository.findById((int) id).orElseThrow(() -> new ResourceNotFoundException("Order", "id", id));
     }
 
     public void save(Order order) {

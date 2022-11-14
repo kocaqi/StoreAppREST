@@ -43,13 +43,13 @@ public class ClientController {
 
     //get client by id
     @GetMapping("/{id}")
-    public ResponseEntity<ClientDTO> getById(@PathVariable(name = "id") int id){
+    public ResponseEntity<ClientDTO> getById(@PathVariable(name = "id") long id){
         return new ResponseEntity<>(clientService.getById(id), HttpStatus.OK);
     }
 
     //update client
     @PutMapping("/update/{id}")
-    public ResponseEntity<ClientDTO> update(@Valid @RequestBody ClientDTO clientDTO, @PathVariable(name = "id") int id){
+    public ResponseEntity<ClientDTO> update(@Valid @RequestBody ClientDTO clientDTO, @PathVariable(name = "id") long id){
         ClientDTO clientResponse = clientService.update(clientDTO, id);
         return new ResponseEntity<>(clientResponse, HttpStatus.OK);
     }

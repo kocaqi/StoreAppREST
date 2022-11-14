@@ -42,7 +42,7 @@ public class OrderController {
 
     //create order
     @PostMapping("/create")
-    public ResponseEntity<String> create(int clientId, Principal principal) {
+    public ResponseEntity<String> create(long clientId, Principal principal) {
         return new ResponseEntity<>(orderService.create(clientId, principal), HttpStatus.CREATED);
     }
 
@@ -57,7 +57,7 @@ public class OrderController {
 
     //get client by id
     @GetMapping("/{id}")
-    public ResponseEntity<OrderDTO> getById(@PathVariable(name = "id") int id) {
+    public ResponseEntity<OrderDTO> getById(@PathVariable(name = "id") long id) {
         return new ResponseEntity<>(orderService.getById(id), HttpStatus.OK);
     }
 

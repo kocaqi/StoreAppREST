@@ -41,13 +41,13 @@ public class UserController {
 
     //get user by id
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getById(@PathVariable(name = "id") int id){
+    public ResponseEntity<UserDTO> getById(@PathVariable(name = "id") long id){
         return new ResponseEntity<>(userService.getById(id), HttpStatus.OK);
     }
 
     //update user
     @PutMapping("/update/{id}")
-    public ResponseEntity<UserDTO> update(@Valid @RequestBody UserDTO userDTO, @PathVariable(name = "id") int id){
+    public ResponseEntity<UserDTO> update(@Valid @RequestBody UserDTO userDTO, @PathVariable(name = "id") long id){
         UserDTO userResponse = userService.update(userDTO, id);
         return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }

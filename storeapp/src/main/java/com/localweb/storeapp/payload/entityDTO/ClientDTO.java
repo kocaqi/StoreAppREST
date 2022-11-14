@@ -13,7 +13,7 @@ import javax.validation.constraints.NotEmpty;
 @JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class ClientDTO {
     @JsonIgnore
-    int id;
+    long id;
     @NotEmpty(message = "This Field cannot be null!")
     private String firstName;
     @NotEmpty(message = "This Field cannot be null!")

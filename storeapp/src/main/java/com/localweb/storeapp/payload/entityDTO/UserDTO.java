@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 public class UserDTO {
     @JsonIgnore
-    int id;
+    long id;
     @NotEmpty(message = "This Field cannot be null!")
     private String firstName;
     @NotEmpty(message = "This Field cannot be null!")

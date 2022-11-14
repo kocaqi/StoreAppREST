@@ -20,7 +20,7 @@ import java.util.List;
 @JsonIdentityReference(alwaysAsId=true)
 public class OrderDTO {
     @JsonIgnore
-    int id;
+    long id;
     @Min(value = 0)
     @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
     @JsonIdentityReference(alwaysAsId=true)

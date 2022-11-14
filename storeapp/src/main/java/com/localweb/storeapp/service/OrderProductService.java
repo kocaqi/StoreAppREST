@@ -32,7 +32,7 @@ public class OrderProductService {
         this.modelMapper = modelMapper;
     }
 
-    public OrderProductDTO create(OrderProductDTO orderProductDTO, int orderId){
+    public OrderProductDTO create(OrderProductDTO orderProductDTO, long orderId){
         OrderProduct orderProduct = modelMapper.map(orderProductDTO, OrderProduct.class);
         orderProduct.setDateCreated(LocalDate.now());
         orderProduct.setDateUpdated(LocalDate.now());
@@ -44,7 +44,7 @@ public class OrderProductService {
         return modelMapper.map(newOrderProduct, OrderProductDTO.class);
     }
 
-    public void delete(int orderId, int productId) {
+    public void delete(long orderId, long productId) {
         OrderProduct orderProduct = orderProductRepository.findByOrderAndProduct(orderId, productId);
         orderProductRepository.delete(orderProduct);
     }
@@ -65,7 +65,7 @@ public class OrderProductService {
         return modelMapper.map(updated, OrderProductDTO.class);
     }
 
-    public ResponseEntity<OrderProductDTO> addProduct(OrderProductDTO orderProductDTO, int orderId) {
+    public ResponseEntity<OrderProductDTO> addProduct(OrderProductDTO orderProductDTO, long orderId) {
         Order order = orderRepository.findOrderById(orderId);
         ProductDTO productDTO = orderProductDTO.getProduct();
         Product product = modelMapper.map(productDTO, Product.class);

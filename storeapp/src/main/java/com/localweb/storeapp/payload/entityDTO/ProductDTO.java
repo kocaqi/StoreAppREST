@@ -13,7 +13,7 @@ import java.util.Set;
 @Data
 public class ProductDTO {
     @JsonIgnore
-    int id;
+    long id;
     @NotEmpty(message = "This Field cannot be null!")
     private String name;
     @NotNull(message = "This Field cannot be null!")
