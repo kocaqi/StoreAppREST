@@ -15,19 +15,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import javax.sql.DataSource;
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
 	private final JWTAuthenticationEntryPoint authenticationEntryPoint;
-	private final DataSource dataSource;
 
 	@Autowired
-	public SecurityConfig(JWTAuthenticationEntryPoint authenticationEntryPoint, DataSource dataSource) {
+	public SecurityConfig(JWTAuthenticationEntryPoint authenticationEntryPoint) {
 		this.authenticationEntryPoint = authenticationEntryPoint;
-		this.dataSource = dataSource;
 	}
 
 	@Bean
