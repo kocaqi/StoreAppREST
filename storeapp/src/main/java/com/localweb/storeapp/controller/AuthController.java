@@ -3,7 +3,9 @@ package com.localweb.storeapp.controller;
 import com.localweb.storeapp.payload.JWTAuthResponse;
 import com.localweb.storeapp.payload.loginAndSignupDTO.LoginDTO;
 import com.localweb.storeapp.security.JWTProvider;
+import com.localweb.storeapp.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -16,38 +18,26 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+
+    private final AuthService authService;
     private final AuthenticationManager authenticationManager;
     private final JWTProvider provider;
 
     @Autowired
-    public AuthController(AuthenticationManager authenticationManager, JWTProvider provider) {
+    public AuthController(AuthService authService, AuthenticationManager authenticationManager, JWTProvider provider) {
+        this.authService = authService;
         this.authenticationManager = authenticationManager;
         this.provider = provider;
     }
 
     @PostMapping("/login")
     public ResponseEntity<JWTAuthResponse> authenticateUser(@RequestBody LoginDTO loginDTO) throws Exception{
-        Authentication authentication;
-        try{
-            authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(loginDTO.getEmail(), loginDTO.getPassword()));
-        } catch (DisabledException e) {
-            throw new Exception("USER_DISABLED", e);
-        } catch (BadCredentialsException e) {
-            throw new Exception("INVALID_CREDENTIALS", e);
-        }
-
-        String accessToken = provider.generateToken(authentication);
-        String refreshToken = provider.generateRefreshToken(authentication);
-        return ResponseEntity.ok(new JWTAuthResponse(accessToken, refreshToken));
+        return authService.authenticate(loginDTO);
     }
 
     @GetMapping("/refreshToken")
-    public ResponseEntity<?> refreshToken() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String accessToken = provider.generateToken(authentication);
-        String refreshToken = provider.generateRefreshToken(authentication);
-        return ResponseEntity.ok(new JWTAuthResponse(accessToken, refreshToken));
+    public ResponseEntity<JWTAuthResponse> refreshToken() {
+        return authService.refreshToken();
     }
 
 }

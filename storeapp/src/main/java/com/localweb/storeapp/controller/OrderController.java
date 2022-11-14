@@ -71,24 +71,7 @@ public class OrderController {
     //add product to order
     @PostMapping("/{id}/addProduct")
     public ResponseEntity<OrderProductDTO> addProduct(@Valid @RequestBody OrderProductDTO orderProductDTO, @PathVariable("id") int orderId) {
-        Order order = orderService.getOrderById(orderId);
-        ProductDTO productDTO = orderProductDTO.getProduct();
-        Product product = modelMapper.map(productDTO, Product.class);
-        long productId = product.getId();
-
-        OrderProduct orderProduct = orderProductService.findByOrderAndProduct(orderId, productId);
-        if (orderProduct == null) {
-            order.setAmount(order.getAmount() + orderProductDTO.getQuantity()*orderProductDTO.getProduct().getPrice());
-            product.setStock(product.getStock() - orderProductDTO.getQuantity());
-            productService.save(product);
-            orderService.save(order);
-            return new ResponseEntity<>(orderProductService.create(orderProductDTO, orderId), HttpStatus.CREATED);
-        } else {
-            OrderProductDTO response = orderProductService.update(orderProductDTO, orderId, productId);
-            product.setStock(product.getStock() - orderProductDTO.getQuantity());
-            productService.save(product);
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        }
+        return ResponseEntity.ok(orderProductService.addProduct(orderProductDTO, orderId).getBody());
     }
 
     @DeleteMapping("/{orderId}/delete/{productId}")
