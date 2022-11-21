@@ -41,8 +41,8 @@ public class OrderController {
     }
 
     //create order
-    @PostMapping("/create")
-    public ResponseEntity<String> create(long clientId, Principal principal) {
+    @PostMapping("/create/{clientId}")
+    public ResponseEntity<String> create(@PathVariable long clientId, Principal principal) {
         return new ResponseEntity<>(orderService.create(clientId, principal), HttpStatus.CREATED);
     }
 

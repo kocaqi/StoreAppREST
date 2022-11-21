@@ -10,10 +10,8 @@ import javax.validation.constraints.NotEmpty;
 
 @Data
 @JsonIdentityReference(alwaysAsId=true)
-@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
+//@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class ClientDTO {
-    @JsonIgnore
-    long id;
     @NotEmpty(message = "This Field cannot be null!")
     private String firstName;
     @NotEmpty(message = "This Field cannot be null!")

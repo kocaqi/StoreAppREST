@@ -2,6 +2,8 @@ package com.localweb.storeapp.service;
 
 import com.localweb.storeapp.entity.Client;
 import com.localweb.storeapp.entity.User;
+import com.localweb.storeapp.search.SearchCriteria;
+import com.localweb.storeapp.search.Specify;
 import com.localweb.storeapp.service.exception.ResourceNotFoundException;
 import com.localweb.storeapp.payload.entityDTO.ClientDTO;
 import com.localweb.storeapp.payload.Response;
@@ -13,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -86,5 +89,16 @@ public class ClientService {
         Client updatedClient = clientRepository.save(client);
 
         return modelMapper.map(updatedClient, ClientDTO.class);
+    }
+
+    public List<ClientDTO> searchBy(String keyword) {
+        Specify<Client> specifyByFirstName = new Specify<>(new SearchCriteria("firstName", ":", keyword));
+        Specify<Client> specifyByLastName = new Specify<>(new SearchCriteria("lastName", ":", keyword));
+        Specify<Client> specifyByEmail = new Specify<>(new SearchCriteria("email", ":", keyword));
+
+        List<Client> clients = clientRepository.findAll(Specification
+                .where(specifyByFirstName).and(specifyByLastName).and(specifyByEmail));
+
+        return clients.stream().map(client -> modelMapper.map(client, ClientDTO.class)).collect(Collectors.toList());
     }
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.security.Principal;
 import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/clients")
@@ -39,6 +40,11 @@ public class ClientController {
                                       @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
                                       @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir){
         return clientService.getAll(pageNo, pageSize, sortBy, sortDir);
+    }
+
+    @GetMapping("/search")
+    public List<ClientDTO> searchBy(@RequestParam String keyword){
+        return clientService.searchBy(keyword);
     }
 
     //get client by id
