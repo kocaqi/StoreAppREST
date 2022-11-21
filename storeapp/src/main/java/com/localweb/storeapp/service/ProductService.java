@@ -64,7 +64,7 @@ public class ProductService {
     }
 
     public ProductDTO getById(long id) {
-        Product product = productRepository.findById((int) id).orElseThrow(()->new ResourceNotFoundException("Product", "id", id));
+        Product product = productRepository.findProductById(id).orElseThrow(()->new ResourceNotFoundException("Product", "id", id));
         return modelMapper.map(product, ProductDTO.class);
     }
 

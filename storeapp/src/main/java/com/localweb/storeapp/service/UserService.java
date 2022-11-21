@@ -51,7 +51,7 @@ public class UserService{
 
         List<Integer> roles = userDTO.getRolesIds();
         for (long roleId : roles) {
-            Role role = roleRepository.findById((int) roleId).orElseThrow(() -> new UsernameNotFoundException("Role with not found!"));
+            Role role = roleRepository.findRoleById(roleId).orElseThrow(() -> new UsernameNotFoundException("Role with not found!"));
             user.addRole(role);
         }
 
@@ -85,12 +85,12 @@ public class UserService{
     }
 
     public UserDTO getById(long id) {
-        User user = userRepository.findById((int) id).orElseThrow(()->new ResourceNotFoundException("User", "id", id));
+        User user = userRepository.findUserById(id).orElseThrow(()->new ResourceNotFoundException("User", "id", id));
         return modelMapper.map(user, UserDTO.class);
     }
 
     public UserDTO update(UserDTO userDTO, long id) {
-        User user = userRepository.findById((int) id).orElseThrow(()->new ResourceNotFoundException("User", "id", id));
+        User user = userRepository.findUserById(id).orElseThrow(()->new ResourceNotFoundException("User", "id", id));
         user.setFirstName(userDTO.getFirstName());
         user.setLastName(userDTO.getLastName());
         user.setEmail(userDTO.getEmail());
@@ -100,7 +100,7 @@ public class UserService{
         user.getRoles().clear();
         List<Integer> roles = userDTO.getRolesIds();
         for (long roleId : roles) {
-            Role role = roleRepository.findById((int) roleId).orElseThrow(()->new UsernameNotFoundException("Role with not found!"));
+            Role role = roleRepository.findRoleById(roleId).orElseThrow(()->new UsernameNotFoundException("Role with not found!"));
             user.addRole(role);
         }
         User updatedUser = userRepository.save(user);
