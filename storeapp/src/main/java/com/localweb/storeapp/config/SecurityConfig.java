@@ -2,6 +2,8 @@ package com.localweb.storeapp.config;
 
 import com.localweb.storeapp.security.JWTAuthenticationEntryPoint;
 import com.localweb.storeapp.security.JWTAuthenticationFilter;
+import com.localweb.storeapp.security.JWTProvider;
+import com.localweb.storeapp.security.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,15 +22,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
 	private final JWTAuthenticationEntryPoint authenticationEntryPoint;
+	private final JWTProvider provider;
+	private final MyUserDetailsService userDetailsService;
 
 	@Autowired
-	public SecurityConfig(JWTAuthenticationEntryPoint authenticationEntryPoint) {
+	public SecurityConfig(JWTAuthenticationEntryPoint authenticationEntryPoint, JWTProvider provider, MyUserDetailsService userDetailsService) {
 		this.authenticationEntryPoint = authenticationEntryPoint;
-	}
-
-	@Bean
-	public JWTAuthenticationFilter jwtAuthenticationFilter(){
-		return new JWTAuthenticationFilter();
+		this.provider = provider;
+		this.userDetailsService = userDetailsService;
 	}
 
 	@Bean
@@ -44,19 +45,20 @@ public class SecurityConfig {
 			.and()
 				.sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-			.and()
+				.and()
 				.authorizeRequests()
-				.antMatchers("/api").hasAnyRole("ADMIN", "OPERATOR")
+				.antMatchers("/api").permitAll()
 				.antMatchers("/api/auth/**").permitAll()
-				.antMatchers("/api/users/**").permitAll()
-				.antMatchers("/api/clients/**").permitAll()
-				.antMatchers("/api/products/**").permitAll()
-				.antMatchers("/api/orders/**").permitAll()
+				.antMatchers("/api/users/**").hasAnyRole("ADMIN")
+				.antMatchers("/api/clients/**").hasAnyRole("ADMIN", "OPERATOR")
+				.antMatchers("/api/products/**").hasAnyRole("ADMIN")
+				.antMatchers("/api/orders/**").hasAnyRole("ADMIN", "OPERATOR")
 				.antMatchers("/v2/api-docs/**").permitAll()
 				.antMatchers("/swagger-ui/**").permitAll()
 				.antMatchers("/swagger-resources/**").permitAll()
 				.antMatchers("/swagger-ui.html/**").permitAll()
 				.antMatchers("/webjars/**").permitAll()
+				.anyRequest().authenticated()
 			.and()
 				.formLogin()
 				.usernameParameter("email")
@@ -65,7 +67,7 @@ public class SecurityConfig {
 			.and()
 				.logout()
 				.logoutSuccessUrl("/login");
-		http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(new JWTAuthenticationFilter(provider, userDetailsService), UsernamePasswordAuthenticationFilter.class);
 		return http.build();
 	}
 

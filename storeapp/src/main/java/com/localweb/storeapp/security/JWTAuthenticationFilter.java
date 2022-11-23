@@ -1,13 +1,12 @@
 package com.localweb.storeapp.security;
 
 import io.jsonwebtoken.ExpiredJwtException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -17,19 +16,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Component
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
-    private JWTProvider provider;
-    private MyUserDetailsService userDetailsService;
+    private final JWTProvider provider;
+    private final MyUserDetailsService userDetailsService;
 
-    @Autowired
     public JWTAuthenticationFilter(JWTProvider provider, MyUserDetailsService userDetailsService) {
         this.provider = provider;
         this.userDetailsService = userDetailsService;
     }
 
-    public JWTAuthenticationFilter() {
-    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -58,7 +55,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         } catch (BadCredentialsException ex) {
             request.setAttribute("exception", ex);
         } catch (Exception ex) {
-            System.out.println(ex);
+            ex.printStackTrace();
         }
 
         filterChain.doFilter(request, response);
