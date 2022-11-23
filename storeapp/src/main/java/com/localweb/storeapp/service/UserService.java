@@ -111,5 +111,12 @@ public class UserService{
 
         return modelMapper.map(updatedUser, UserDTO.class);
     }
+
+    public UserDTO addRole(long userId, long roleId) {
+        User user = userRepository.findUserById(userId).orElseThrow(()->new ResourceNotFoundException("User", "id", userId));
+        Role role = roleRepository.findRoleById(roleId).orElseThrow(()->new ResourceNotFoundException("User", "id", roleId));
+        user.addRole(role);
+        return modelMapper.map(userRepository.save(user), UserDTO.class);
+    }
 }
 
