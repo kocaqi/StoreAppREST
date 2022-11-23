@@ -2,6 +2,7 @@ package com.localweb.storeapp.controller;
 
 import com.localweb.storeapp.payload.Response;
 import com.localweb.storeapp.payload.entityDTO.ClientDTO;
+import com.localweb.storeapp.payload.saveDTO.ClientSaveDTO;
 import com.localweb.storeapp.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,9 +26,9 @@ public class ClientController {
 
     //create client
     @PostMapping("/create")
-    public ResponseEntity<ClientDTO> create(@Valid @RequestBody ClientDTO clientDTO,
+    public ResponseEntity<ClientDTO> create(@Valid @RequestBody ClientSaveDTO clientSaveDTO,
                                                 Principal principal){
-        return new ResponseEntity<>(clientService.create(clientDTO, principal), HttpStatus.CREATED);
+        return new ResponseEntity<>(clientService.create(clientSaveDTO, principal), HttpStatus.CREATED);
     }
 
     //get all clients
@@ -52,8 +53,8 @@ public class ClientController {
 
     //update client
     @PutMapping("/update/{id}")
-    public ResponseEntity<ClientDTO> update(@Valid @RequestBody ClientDTO clientDTO, @PathVariable(name = "id") long id){
-        ClientDTO clientResponse = clientService.update(clientDTO, id);
+    public ResponseEntity<ClientDTO> update(@Valid @RequestBody ClientSaveDTO clientSaveDTO, @PathVariable(name = "id") long id){
+        ClientDTO clientResponse = clientService.update(clientSaveDTO, id);
         return new ResponseEntity<>(clientResponse, HttpStatus.OK);
     }
 }

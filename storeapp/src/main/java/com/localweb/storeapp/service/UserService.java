@@ -3,7 +3,9 @@ package com.localweb.storeapp.service;
 import com.localweb.storeapp.entity.Role;
 import com.localweb.storeapp.entity.User;
 import com.localweb.storeapp.payload.Response;
+import com.localweb.storeapp.payload.entityDTO.RoleDTO;
 import com.localweb.storeapp.payload.entityDTO.UserDTO;
+import com.localweb.storeapp.payload.saveDTO.UserSaveDTO;
 import com.localweb.storeapp.repository.RoleRepository;
 import com.localweb.storeapp.repository.UserRepository;
 import com.localweb.storeapp.service.exception.ResourceNotFoundException;
@@ -40,20 +42,21 @@ public class UserService{
         this.passwordEncoder = passwordEncoder;
     }
 
-    public UserDTO create(UserDTO userDTO) {
+    public UserDTO create(UserSaveDTO userSaveDTO) {
         //convert DTO to entity
-        User user = modelMapper.map(userDTO, User.class);
+        User user = modelMapper.map(userSaveDTO, User.class);
         user.setDateCreated(LocalDate.now());
         user.setDateUpdated(LocalDate.now());
         user.setEnabled(1);
-        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        //user.setRoles(userDTO.getRolesIds());
+        user.setPassword(passwordEncoder.encode(userSaveDTO.getPassword()));
+        //user.setRoles(userSaveDTO.getRoles());
 
-        List<Integer> roles = userDTO.getRolesIds();
-        for (long roleId : roles) {
-            Role role = roleRepository.findRoleById(roleId).orElseThrow(() -> new UsernameNotFoundException("Role with not found!"));
+        /*List<RoleDTO> roles = userSaveDTO.getRoles();
+        for (RoleDTO roleDTO : roles) {
+            //Role role = roleRepository.findRoleById(roleId).orElseThrow(() -> new UsernameNotFoundException("Role with not found!"));
+            Role role = modelMapper.map(roleDTO, Role.class);
             user.addRole(role);
-        }
+        }*/
 
         User newUser = userRepository.save(user);
 
@@ -89,18 +92,19 @@ public class UserService{
         return modelMapper.map(user, UserDTO.class);
     }
 
-    public UserDTO update(UserDTO userDTO, long id) {
+    public UserDTO update(UserSaveDTO userSaveDTO, long id) {
         User user = userRepository.findUserById(id).orElseThrow(()->new ResourceNotFoundException("User", "id", id));
-        user.setFirstName(userDTO.getFirstName());
-        user.setLastName(userDTO.getLastName());
-        user.setEmail(userDTO.getEmail());
+        user.setFirstName(userSaveDTO.getFirstName());
+        user.setLastName(userSaveDTO.getLastName());
+        user.setEmail(userSaveDTO.getEmail());
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        user.setPassword(passwordEncoder.encode(userSaveDTO.getPassword()));
         user.setDateUpdated(LocalDate.now());
         user.getRoles().clear();
-        List<Integer> roles = userDTO.getRolesIds();
-        for (long roleId : roles) {
-            Role role = roleRepository.findRoleById(roleId).orElseThrow(()->new UsernameNotFoundException("Role with not found!"));
+        List<RoleDTO> roles = userSaveDTO.getRoles();
+        for (RoleDTO roleDTO : roles) {
+            //Role role = roleRepository.findRoleById(roleId).orElseThrow(() -> new UsernameNotFoundException("Role with not found!"));
+            Role role = modelMapper.map(roleDTO, Role.class);
             user.addRole(role);
         }
         User updatedUser = userRepository.save(user);

@@ -1,4 +1,4 @@
-package com.localweb.storeapp.payload.entityDTO;
+package com.localweb.storeapp.payload.saveDTO;
 
 import lombok.Data;
 
@@ -7,9 +7,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class ProductDTO {
-    @Min(value = 0)
-    private long id;
+public class ProductSaveDTO {
     @NotEmpty(message = "This Field cannot be null!")
     private String name;
     @NotNull(message = "This Field cannot be null!")

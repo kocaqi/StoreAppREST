@@ -38,7 +38,7 @@ public class OrderService {
         this.clientRepository = clientRepository;
     }
 
-    public String create(long clientId, Principal principal) {
+    public OrderDTO create(long clientId, Principal principal) {
         //convert DTO to entity
         Order order = new Order();
         Client client = clientRepository.findById((int) clientId).orElseThrow(
@@ -52,7 +52,7 @@ public class OrderService {
         Order newOrder = orderRepository.save(order);
 
         //convert entity to DTO
-        return "U kry!";
+        return modelMapper.map(newOrder, OrderDTO.class);
     }
 
     public Response<OrderDTO> getAll(int pageNo, int pageSize, String sortBy, String sortDir) {
@@ -81,13 +81,6 @@ public class OrderService {
     public OrderDTO getById(long id) {
         Order order = orderRepository.findById((int) id).orElseThrow(() -> new ResourceNotFoundException("Order", "id", id));
         return modelMapper.map(order, OrderDTO.class);
-    }
-
-    public OrderDTO update(OrderDTO orderDTO, long id) {
-        Order order = orderRepository.findById((int) id).orElseThrow(() -> new ResourceNotFoundException("Order", "id", id));
-        order.setDateUpdated(LocalDate.now());
-        Order updatedOrder = orderRepository.save(order);
-        return modelMapper.map(updatedOrder, OrderDTO.class);
     }
 
     public Order getOrderById(long id) {

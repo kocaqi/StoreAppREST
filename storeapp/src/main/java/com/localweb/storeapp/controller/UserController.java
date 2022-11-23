@@ -2,6 +2,7 @@ package com.localweb.storeapp.controller;
 
 import com.localweb.storeapp.payload.Response;
 import com.localweb.storeapp.payload.entityDTO.UserDTO;
+import com.localweb.storeapp.payload.saveDTO.UserSaveDTO;
 import com.localweb.storeapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,8 +24,8 @@ public class UserController {
 
     //create user
     @PostMapping("/create")
-    public ResponseEntity<UserDTO> create(@Valid @RequestBody UserDTO userDTO){
-        return new ResponseEntity<>(userService.create(userDTO), HttpStatus.CREATED);
+    public ResponseEntity<UserDTO> create(@Valid @RequestBody UserSaveDTO userSaveDTO){
+        return new ResponseEntity<>(userService.create(userSaveDTO), HttpStatus.CREATED);
     }
 
     //get all users
@@ -44,8 +45,8 @@ public class UserController {
 
     //update user
     @PutMapping("/update/{id}")
-    public ResponseEntity<UserDTO> update(@Valid @RequestBody UserDTO userDTO, @PathVariable(name = "id") long id){
-        UserDTO userResponse = userService.update(userDTO, id);
+    public ResponseEntity<UserDTO> update(@Valid @RequestBody UserSaveDTO userSaveDTO, @PathVariable(name = "id") long id){
+        UserDTO userResponse = userService.update(userSaveDTO, id);
         return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }
 }

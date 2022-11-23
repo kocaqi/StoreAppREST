@@ -2,6 +2,7 @@ package com.localweb.storeapp.controller;
 
 import com.localweb.storeapp.payload.Response;
 import com.localweb.storeapp.payload.entityDTO.ProductDTO;
+import com.localweb.storeapp.payload.saveDTO.ProductSaveDTO;
 import com.localweb.storeapp.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,8 +24,8 @@ public class ProductController {
 
     //create product
     @PostMapping("/create")
-    public ResponseEntity<ProductDTO> create(@Valid @RequestBody ProductDTO productDTO){
-        return new ResponseEntity<>(productService.create(productDTO), HttpStatus.CREATED);
+    public ResponseEntity<ProductDTO> create(@Valid @RequestBody ProductSaveDTO productSaveDTO){
+        return new ResponseEntity<>(productService.create(productSaveDTO), HttpStatus.CREATED);
     }
 
     //get all products
@@ -44,8 +45,8 @@ public class ProductController {
 
     //update product
     @PutMapping("/update/{id}")
-    public ResponseEntity<ProductDTO> update(@Valid @RequestBody ProductDTO productDTO, @PathVariable(name = "id") long id){
-        ProductDTO productResponse = productService.update(productDTO, id);
+    public ResponseEntity<ProductDTO> update(@Valid @RequestBody ProductSaveDTO productSaveDTO, @PathVariable(name = "id") long id){
+        ProductDTO productResponse = productService.update(productSaveDTO, id);
         return new ResponseEntity<>(productResponse, HttpStatus.OK);
     }
 }

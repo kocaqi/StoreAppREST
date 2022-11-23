@@ -3,6 +3,7 @@ package com.localweb.storeapp.service;
 import com.localweb.storeapp.entity.Product;
 import com.localweb.storeapp.payload.Response;
 import com.localweb.storeapp.payload.entityDTO.ProductDTO;
+import com.localweb.storeapp.payload.saveDTO.ProductSaveDTO;
 import com.localweb.storeapp.repository.ProductRepository;
 import com.localweb.storeapp.service.exception.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
@@ -29,9 +30,9 @@ public class ProductService {
         this.modelMapper = modelMapper;
     }
 
-    public ProductDTO create(ProductDTO productDTO){
+    public ProductDTO create(ProductSaveDTO productSaveDTO){
         //convert DTO to entity
-        Product product = modelMapper.map(productDTO, Product.class);
+        Product product = modelMapper.map(productSaveDTO, Product.class);
         product.setDateCreated(LocalDate.now());
         product.setDateUpdated(LocalDate.now());
         Product newProduct = productRepository.save(product);
@@ -68,11 +69,11 @@ public class ProductService {
         return modelMapper.map(product, ProductDTO.class);
     }
 
-    public ProductDTO update(ProductDTO productDTO, long id) {
+    public ProductDTO update(ProductSaveDTO productSaveDTO, long id) {
         Product product = productRepository.findById((int) id).orElseThrow(()->new ResourceNotFoundException("Product", "id", id));
-        product.setName(productDTO.getName());
-        product.setPrice(productDTO.getPrice());
-        product.setStock(productDTO.getStock());
+        product.setName(productSaveDTO.getName());
+        product.setPrice(productSaveDTO.getPrice());
+        product.setStock(productSaveDTO.getStock());
         product.setDateUpdated(LocalDate.now());
 
         Product updatedProduct = productRepository.save(product);

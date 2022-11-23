@@ -40,7 +40,7 @@ public class StoreappApplication implements CommandLineRunner {
 
 	@Override
 	@Transactional
-	public void run(String... args) throws Exception {
+	public void run(String... args) {
 		Role admin = new Role();
 		admin.setName("ROLE_ADMIN");
 		Role checkAdmin = roleRepository.findRoleByName(admin.getName());

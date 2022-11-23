@@ -4,6 +4,7 @@ import com.localweb.storeapp.entity.Client;
 import com.localweb.storeapp.entity.User;
 import com.localweb.storeapp.payload.Response;
 import com.localweb.storeapp.payload.entityDTO.ClientDTO;
+import com.localweb.storeapp.payload.saveDTO.ClientSaveDTO;
 import com.localweb.storeapp.repository.ClientRepository;
 import com.localweb.storeapp.repository.UserRepository;
 import com.localweb.storeapp.search.SearchCriteria;
@@ -38,9 +39,9 @@ public class ClientService {
         this.modelMapper = modelMapper;
     }
 
-    public ClientDTO create(ClientDTO clientDTO, Principal principal) {
+    public ClientDTO create(ClientSaveDTO clientSaveDTO, Principal principal) {
         //convert DTO to entity
-        Client client = modelMapper.map(clientDTO, Client.class);
+        Client client = modelMapper.map(clientSaveDTO, Client.class);
         client.setDateCreated(LocalDate.now());
         client.setDateUpdated(LocalDate.now());
         String email = principal.getName();
@@ -80,11 +81,11 @@ public class ClientService {
         return modelMapper.map(client, ClientDTO.class);
     }
 
-    public ClientDTO update(ClientDTO clientDTO, long id) {
+    public ClientDTO update(ClientSaveDTO clientSaveDTO, long id) {
         Client client = clientRepository.findById((int) id).orElseThrow(() -> new ResourceNotFoundException("Client", "id", id));
-        client.setFirstName(clientDTO.getFirstName());
-        client.setLastName(clientDTO.getLastName());
-        client.setEmail(clientDTO.getEmail());
+        client.setFirstName(clientSaveDTO.getFirstName());
+        client.setLastName(clientSaveDTO.getLastName());
+        client.setEmail(clientSaveDTO.getEmail());
         client.setDateUpdated(LocalDate.now());
         Client updatedClient = clientRepository.save(client);
 

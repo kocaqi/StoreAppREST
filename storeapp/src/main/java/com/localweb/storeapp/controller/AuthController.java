@@ -14,14 +14,10 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthService authService;
-    private final AuthenticationManager authenticationManager;
-    private final JWTProvider provider;
 
     @Autowired
-    public AuthController(AuthService authService, AuthenticationManager authenticationManager, JWTProvider provider) {
+    public AuthController(AuthService authService) {
         this.authService = authService;
-        this.authenticationManager = authenticationManager;
-        this.provider = provider;
     }
 
     @PostMapping("/login")
