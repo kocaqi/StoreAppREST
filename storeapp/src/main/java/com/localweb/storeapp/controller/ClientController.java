@@ -1,10 +1,8 @@
 package com.localweb.storeapp.controller;
 
-import com.localweb.storeapp.entity.User;
-import com.localweb.storeapp.payload.entityDTO.ClientDTO;
 import com.localweb.storeapp.payload.Response;
+import com.localweb.storeapp.payload.entityDTO.ClientDTO;
 import com.localweb.storeapp.service.ClientService;
-import com.localweb.storeapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController

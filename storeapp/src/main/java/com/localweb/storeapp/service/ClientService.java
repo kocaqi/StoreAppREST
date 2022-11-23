@@ -2,13 +2,13 @@ package com.localweb.storeapp.service;
 
 import com.localweb.storeapp.entity.Client;
 import com.localweb.storeapp.entity.User;
+import com.localweb.storeapp.payload.Response;
+import com.localweb.storeapp.payload.entityDTO.ClientDTO;
+import com.localweb.storeapp.repository.ClientRepository;
+import com.localweb.storeapp.repository.UserRepository;
 import com.localweb.storeapp.search.SearchCriteria;
 import com.localweb.storeapp.search.Specify;
 import com.localweb.storeapp.service.exception.ResourceNotFoundException;
-import com.localweb.storeapp.payload.entityDTO.ClientDTO;
-import com.localweb.storeapp.payload.Response;
-import com.localweb.storeapp.repository.ClientRepository;
-import com.localweb.storeapp.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

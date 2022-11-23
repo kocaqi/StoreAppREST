@@ -1,12 +1,11 @@
 package com.localweb.storeapp.repository;
 
-import com.localweb.storeapp.entity.*;
+import com.localweb.storeapp.entity.OrderProduct;
+import com.localweb.storeapp.entity.OrderProductKey;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
 
 @Repository
 public interface OrderProductRepository  extends JpaRepository<OrderProduct, OrderProductKey>, JpaSpecificationExecutor<OrderProduct> {

@@ -1,7 +1,5 @@
 package com.localweb.storeapp.payload;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.Date;
 
 public class ErrorDetails {

@@ -1,26 +1,19 @@
 package com.localweb.storeapp.controller;
 
-import com.localweb.storeapp.entity.Order;
-import com.localweb.storeapp.entity.OrderProduct;
-import com.localweb.storeapp.entity.Product;
+import com.localweb.storeapp.payload.Response;
 import com.localweb.storeapp.payload.entityDTO.OrderDTO;
 import com.localweb.storeapp.payload.entityDTO.OrderProductDTO;
-import com.localweb.storeapp.payload.Response;
-import com.localweb.storeapp.payload.entityDTO.ProductDTO;
 import com.localweb.storeapp.service.OrderProductService;
 import com.localweb.storeapp.service.OrderService;
 import com.localweb.storeapp.service.ProductService;
-import com.localweb.storeapp.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api/orders")

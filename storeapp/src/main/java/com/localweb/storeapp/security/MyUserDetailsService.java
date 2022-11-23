@@ -1,6 +1,5 @@
 package com.localweb.storeapp.security;
 
-import com.localweb.storeapp.config.UserPrincipal;
 import com.localweb.storeapp.entity.Role;
 import com.localweb.storeapp.entity.User;
 import com.localweb.storeapp.repository.UserRepository;

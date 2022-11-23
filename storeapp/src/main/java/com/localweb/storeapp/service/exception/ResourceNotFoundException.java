@@ -1,6 +1,5 @@
 package com.localweb.storeapp.service.exception;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 

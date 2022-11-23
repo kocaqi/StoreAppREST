@@ -2,11 +2,11 @@ package com.localweb.storeapp.service;
 
 import com.localweb.storeapp.entity.Role;
 import com.localweb.storeapp.entity.User;
-import com.localweb.storeapp.service.exception.ResourceNotFoundException;
-import com.localweb.storeapp.payload.entityDTO.UserDTO;
 import com.localweb.storeapp.payload.Response;
+import com.localweb.storeapp.payload.entityDTO.UserDTO;
 import com.localweb.storeapp.repository.RoleRepository;
 import com.localweb.storeapp.repository.UserRepository;
+import com.localweb.storeapp.service.exception.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
