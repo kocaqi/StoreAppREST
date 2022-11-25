@@ -141,6 +141,17 @@ public class User {
     public void addRole(Role role){
         this.roles.add(role);
     }
+    public void removeRole(Role role) {
+        /*for(int i=0; i<roles.size(); i++) {
+            if (roles.get(i).equals(role)) {
+                this.roles.remove(i);
+                return;
+            }
+        }*/
+        List<Role> newRoles = getRoles();
+        newRoles.remove(role);
+        setRoles(newRoles);
+    }
 
     @Override
     public String toString() {

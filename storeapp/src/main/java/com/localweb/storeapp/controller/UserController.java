@@ -54,4 +54,10 @@ public class UserController {
                                            @PathVariable(name = "roleId") long roleId) {
         return new ResponseEntity<>(userService.addRole(userId, roleId), HttpStatus.OK);
     }
+
+    @PutMapping("/{userId}/removeRole/{roleId}")
+    public ResponseEntity<UserDTO> removeRole(@PathVariable(name = "userId") long userId,
+                                           @PathVariable(name = "roleId") long roleId) {
+        return new ResponseEntity<>(userService.removeRole(userId, roleId), HttpStatus.OK);
+    }
 }
