@@ -1,9 +1,7 @@
 package com.localweb.storeapp.service;
 
-import com.localweb.storeapp.entity.Client;
 import com.localweb.storeapp.entity.Product;
 import com.localweb.storeapp.payload.Response;
-import com.localweb.storeapp.payload.entityDTO.ClientDTO;
 import com.localweb.storeapp.payload.entityDTO.ProductDTO;
 import com.localweb.storeapp.payload.saveDTO.ProductSaveDTO;
 import com.localweb.storeapp.repository.ProductRepository;

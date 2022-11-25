@@ -1,6 +1,7 @@
 package com.localweb.storeapp.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.localweb.storeapp.annotation.Email;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -22,6 +23,7 @@ public class User {
     @Column(name = "last_name", nullable = false)
     private String lastName;
     @Column(name = "email", nullable = false)
+    @Email
     private String email;
     @Column(name = "password", nullable = false)
     private String password;

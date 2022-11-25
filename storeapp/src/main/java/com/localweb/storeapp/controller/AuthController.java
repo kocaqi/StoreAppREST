@@ -2,11 +2,9 @@ package com.localweb.storeapp.controller;
 
 import com.localweb.storeapp.payload.JWTAuthResponse;
 import com.localweb.storeapp.payload.loginAndSignupDTO.LoginDTO;
-import com.localweb.storeapp.security.JWTProvider;
 import com.localweb.storeapp.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
