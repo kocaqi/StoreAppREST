@@ -1,6 +1,7 @@
 package com.localweb.storeapp.controller;
 
 import com.localweb.storeapp.payload.Response;
+import com.localweb.storeapp.payload.entityDTO.ClientDTO;
 import com.localweb.storeapp.payload.entityDTO.ProductDTO;
 import com.localweb.storeapp.payload.saveDTO.ProductSaveDTO;
 import com.localweb.storeapp.service.ProductService;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/products")
@@ -35,6 +37,11 @@ public class ProductController {
                            @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy,
                            @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir){
         return productService.getAll(pageNo, pageSize, sortBy, sortDir);
+    }
+
+    @GetMapping("/search")
+    public List<ProductDTO> searchBy(@RequestParam String keyword){
+        return productService.searchBy(keyword);
     }
 
     //get product by id

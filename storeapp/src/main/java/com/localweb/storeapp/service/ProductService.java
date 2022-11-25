@@ -1,10 +1,14 @@
 package com.localweb.storeapp.service;
 
+import com.localweb.storeapp.entity.Client;
 import com.localweb.storeapp.entity.Product;
 import com.localweb.storeapp.payload.Response;
+import com.localweb.storeapp.payload.entityDTO.ClientDTO;
 import com.localweb.storeapp.payload.entityDTO.ProductDTO;
 import com.localweb.storeapp.payload.saveDTO.ProductSaveDTO;
 import com.localweb.storeapp.repository.ProductRepository;
+import com.localweb.storeapp.search.SearchCriteria;
+import com.localweb.storeapp.search.Specify;
 import com.localweb.storeapp.service.exception.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -81,7 +86,12 @@ public class ProductService {
         return modelMapper.map(updatedProduct, ProductDTO.class);
     }
 
-    public void save(Product product) {
-        productRepository.save(product);
+    public List<ProductDTO> searchBy(String keyword) {
+        Specify<Product> specifyByName = new Specify<>(new SearchCriteria("name", ":", keyword));
+
+        List<Product> products = productRepository.findAll(Specification
+                .where(specifyByName));
+
+        return products.stream().map(product -> modelMapper.map(product, ProductDTO.class)).collect(Collectors.toList());
     }
 }

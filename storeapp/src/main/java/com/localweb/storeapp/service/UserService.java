@@ -8,6 +8,8 @@ import com.localweb.storeapp.payload.entityDTO.UserDTO;
 import com.localweb.storeapp.payload.saveDTO.UserSaveDTO;
 import com.localweb.storeapp.repository.RoleRepository;
 import com.localweb.storeapp.repository.UserRepository;
+import com.localweb.storeapp.search.SearchCriteria;
+import com.localweb.storeapp.search.Specify;
 import com.localweb.storeapp.service.exception.ResourceNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -128,6 +131,17 @@ public class UserService{
         }*/
         user.removeRole(role);
         return modelMapper.map(userRepository.save(user), UserDTO.class);
+    }
+
+    public List<UserDTO> searchBy(String keyword) {
+        Specify<User> specifyByFirstName = new Specify<>(new SearchCriteria("firstName", ":", keyword));
+        Specify<User> specifyByLastName = new Specify<>(new SearchCriteria("lastName", ":", keyword));
+        Specify<User> specifyByEmail = new Specify<>(new SearchCriteria("email", ":", keyword));
+
+        List<User> users = userRepository.findAll(Specification
+                .where(specifyByFirstName).and(specifyByLastName).and(specifyByEmail));
+
+        return users.stream().map(user -> modelMapper.map(user, UserDTO.class)).collect(Collectors.toList());
     }
 }
 

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
@@ -41,6 +42,11 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getById(@PathVariable(name = "id") long id){
         return new ResponseEntity<>(userService.getById(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public List<UserDTO> searchBy(@RequestParam String keyword){
+        return userService.searchBy(keyword);
     }
 
     //update user
