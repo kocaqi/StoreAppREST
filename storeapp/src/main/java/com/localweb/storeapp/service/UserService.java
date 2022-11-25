@@ -124,12 +124,11 @@ public class UserService{
 
     public UserDTO removeRole(long userId, long roleId) {
         User user = userRepository.findUserById(userId).orElseThrow(()->new ResourceNotFoundException("User", "id", userId));
-        Role role = roleRepository.findRoleById(roleId).orElseThrow(()->new ResourceNotFoundException("User", "id", roleId));
-        /*for(int i=0; i<user.getRoles().size(); i++) {
-            if(user.getRoles().get(i).equals(role))
-                user.getRoles().remove(i);
-        }*/
-        user.removeRole(role);
+        Role role = roleRepository.findRoleById(roleId).orElseThrow(()->new ResourceNotFoundException("Role", "id", roleId));
+        //user.removeRole(role);
+        List<Role> roles = user.getRoles();
+        roles.remove(role);
+        user.setRoles(roles);
         return modelMapper.map(userRepository.save(user), UserDTO.class);
     }
 

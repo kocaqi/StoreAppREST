@@ -30,7 +30,7 @@ public class User {
     @Column(name = "date_updated")
     private LocalDate dateUpdated;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH, CascadeType.REMOVE})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH, CascadeType.DETACH, CascadeType.REMOVE})
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roles = new ArrayList<>();
@@ -142,15 +142,7 @@ public class User {
         this.roles.add(role);
     }
     public void removeRole(Role role) {
-        /*for(int i=0; i<roles.size(); i++) {
-            if (roles.get(i).equals(role)) {
-                this.roles.remove(i);
-                return;
-            }
-        }*/
-        List<Role> newRoles = getRoles();
-        newRoles.remove(role);
-        setRoles(newRoles);
+        this.roles.remove(role);
     }
 
     @Override
