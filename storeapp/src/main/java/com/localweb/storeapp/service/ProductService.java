@@ -70,7 +70,7 @@ public class ProductService {
     }
 
     public ProductDTO update(ProductSaveDTO productSaveDTO, long id) {
-        Product product = productRepository.findById((int) id).orElseThrow(()->new ResourceNotFoundException("Product", "id", id));
+        Product product = productRepository.findProductById(id).orElseThrow(()->new ResourceNotFoundException("Product", "id", id));
         product.setName(productSaveDTO.getName());
         product.setPrice(productSaveDTO.getPrice());
         product.setStock(productSaveDTO.getStock());

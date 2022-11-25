@@ -41,7 +41,7 @@ public class OrderService {
     public OrderDTO create(long clientId, Principal principal) {
         //convert DTO to entity
         Order order = new Order();
-        Client client = clientRepository.findById((int) clientId).orElseThrow(
+        Client client = clientRepository.findClientById(clientId).orElseThrow(
                 () -> new ResourceNotFoundException("Client", "id", clientId));
         order.setClient_id(client);
         order.setDateCreated(LocalDate.now());

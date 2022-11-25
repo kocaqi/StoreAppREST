@@ -14,11 +14,11 @@ public class OrderProduct {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     long id;
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST})
     @JoinColumn(name = "order_id", nullable = false)
     @JsonIgnore
     Order order;
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST})
     @JoinColumn(name = "product_id", nullable = false)
     @JsonIgnore
     Product product;

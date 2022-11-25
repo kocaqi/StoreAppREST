@@ -77,12 +77,12 @@ public class ClientService {
     }
 
     public ClientDTO getById(long id) {
-        Client client = clientRepository.findById((int) id).orElseThrow(() -> new ResourceNotFoundException("Client", "id", id));
+        Client client = clientRepository.findClientById(id).orElseThrow(() -> new ResourceNotFoundException("Client", "id", id));
         return modelMapper.map(client, ClientDTO.class);
     }
 
     public ClientDTO update(ClientSaveDTO clientSaveDTO, long id) {
-        Client client = clientRepository.findById((int) id).orElseThrow(() -> new ResourceNotFoundException("Client", "id", id));
+        Client client = clientRepository.findClientById(id).orElseThrow(() -> new ResourceNotFoundException("Client", "id", id));
         client.setFirstName(clientSaveDTO.getFirstName());
         client.setLastName(clientSaveDTO.getLastName());
         client.setEmail(clientSaveDTO.getEmail());

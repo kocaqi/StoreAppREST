@@ -31,8 +31,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
-
-
             String token = getJWTFromRequest(request);
             if (StringUtils.hasText(token) && provider.validateToken(token)) {
                 String email = provider.getEmailFromJWT(token);
@@ -44,7 +42,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
         } catch (ExpiredJwtException ex) {
-
             String isRefreshToken = request.getHeader("isRefreshToken");
             String requestURL = request.getRequestURL().toString();
             // allow for Refresh Token creation if following conditions are true.
@@ -57,7 +54,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
         filterChain.doFilter(request, response);
     }
 
@@ -72,7 +68,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
     private String getJWTFromRequest(HttpServletRequest request){
         String bearerToken = request.getHeader("Authorization");
         if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")){
-            return bearerToken.substring(7, bearerToken.length());
+            return bearerToken.substring(7);
         }
         return null;
     }

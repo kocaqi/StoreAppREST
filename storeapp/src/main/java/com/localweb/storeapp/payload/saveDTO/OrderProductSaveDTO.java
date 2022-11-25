@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class OrderProductSaveDTO {
     @NotNull(message = "This Field cannot be null!")
-    ProductSaveDTO product;
+    long productId;
     @NotNull(message = "This Field cannot be null!")
     @Min(value = 0, message = "Please enter positive number!")
     double quantity;
