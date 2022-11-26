@@ -58,15 +58,14 @@ public class StoreappApplication implements CommandLineRunner {
 
 		User user = new User();
 		user.setEnabled(1);
-		user.setEmail("string");
+		user.setEmail("string@gmail.com");
 		user.setPassword(new BCryptPasswordEncoder().encode("string"));
 		user.setFirstName("string");
 		user.setLastName("string");
 		user.setDateCreated(LocalDate.now());
 		user.setDateUpdated(LocalDate.now());
 		user.setRoles(roles);
-		User checkUser = userRepository.findByEmail("string");
-		if(checkUser==null)
+		if(userRepository.findByEmail(user.getEmail())==null)
 			userRepository.save(user);
 	}
 }
