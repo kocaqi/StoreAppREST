@@ -17,3 +17,14 @@ public class ProductSaveDTO {
     @Min(value = 0, message = "Please enter positive number!")
     private double stock;
 }
+
+
+
+
+
+
+
+
+
+
+

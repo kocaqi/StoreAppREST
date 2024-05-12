@@ -1,4 +1,3 @@
-
 package com.localweb.storeapp.entity;
 
 import org.hibernate.annotations.LazyCollection;

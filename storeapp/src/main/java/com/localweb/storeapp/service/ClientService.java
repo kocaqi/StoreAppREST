@@ -103,3 +103,4 @@ public class ClientService {
         return clients.stream().map(client -> modelMapper.map(client, ClientDTO.class)).collect(Collectors.toList());
     }
 }
+

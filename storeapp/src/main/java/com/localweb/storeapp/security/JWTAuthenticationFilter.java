@@ -1,5 +1,4 @@
 package com.localweb.storeapp.security;
-
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,19 +14,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
 @Component
 public class JWTAuthenticationFilter extends OncePerRequestFilter {
-
     private final JWTProvider provider;
     private final MyUserDetailsService userDetailsService;
-
     public JWTAuthenticationFilter(JWTProvider provider, MyUserDetailsService userDetailsService) {
         this.provider = provider;
         this.userDetailsService = userDetailsService;
     }
-
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
@@ -56,7 +50,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
-
     private void allowForRefreshToken(ExpiredJwtException ex, HttpServletRequest request) {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                 new UsernamePasswordAuthenticationToken(null, null, null);
@@ -64,7 +57,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         request.setAttribute("claims", ex.getClaims());
 
     }
-
     private String getJWTFromRequest(HttpServletRequest request){
         String bearerToken = request.getHeader("Authorization");
         if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")){

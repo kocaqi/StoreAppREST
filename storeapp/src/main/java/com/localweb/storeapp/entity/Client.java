@@ -1,4 +1,3 @@
-
 package com.localweb.storeapp.entity;
 
 import com.fasterxml.jackson.annotation.*;

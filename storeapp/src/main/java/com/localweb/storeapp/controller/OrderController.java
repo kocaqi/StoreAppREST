@@ -51,7 +51,7 @@ public class OrderController {
     //add product to order
     @PostMapping("/{orderId}/addProduct")
     public ResponseEntity<OrderProductDTO> addProduct(@Valid @RequestBody OrderProductSaveDTO orderProductSaveDTO, @PathVariable("orderId") int orderId) {
-        return ResponseEntity.ok(orderProductService.addProduct(orderProductSaveDTO, orderId).getBody());
+        return new ResponseEntity<>(orderProductService.addProduct(orderProductSaveDTO, orderId), HttpStatus.OK);
     }
 
     @DeleteMapping("/{orderId}/remove_product/{productId}")

@@ -1,5 +1,4 @@
 package com.localweb.storeapp.service;
-
 import com.localweb.storeapp.entity.Role;
 import com.localweb.storeapp.entity.User;
 import com.localweb.storeapp.payload.Response;
@@ -25,17 +24,12 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
-
-
 @Service
 public class UserService{
-
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final ModelMapper modelMapper;
     private final PasswordEncoder passwordEncoder;
-
-
     @Autowired
     public UserService(UserRepository userRepository, RoleRepository roleRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
@@ -43,26 +37,13 @@ public class UserService{
         this.modelMapper = modelMapper;
         this.passwordEncoder = passwordEncoder;
     }
-
     public UserDTO create(UserSaveDTO userSaveDTO) {
-        //convert DTO to entity
         User user = modelMapper.map(userSaveDTO, User.class);
         user.setDateCreated(LocalDate.now());
         user.setDateUpdated(LocalDate.now());
         user.setEnabled(1);
         user.setPassword(passwordEncoder.encode(userSaveDTO.getPassword()));
-        //user.setRoles(userSaveDTO.getRoles());
-
-        /*List<RoleDTO> roles = userSaveDTO.getRoles();
-        for (RoleDTO roleDTO : roles) {
-            //Role role = roleRepository.findRoleById(roleId).orElseThrow(() -> new UsernameNotFoundException("Role with not found!"));
-            Role role = modelMapper.map(roleDTO, Role.class);
-            user.addRole(role);
-        }*/
-
         User newUser = userRepository.save(user);
-
-        //convert entity to DTO
         return modelMapper.map(newUser, UserDTO.class);
     }
 

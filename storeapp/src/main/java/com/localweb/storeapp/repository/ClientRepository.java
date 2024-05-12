@@ -11,3 +11,5 @@ import java.util.Optional;
 public interface ClientRepository extends JpaRepository<Client, Integer>, JpaSpecificationExecutor<Client> {
     Optional<Client> findClientById(long id);
 }
+
+

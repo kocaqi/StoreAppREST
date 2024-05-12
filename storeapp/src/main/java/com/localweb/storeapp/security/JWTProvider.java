@@ -15,14 +15,14 @@ public class JWTProvider {
     @Value("${app.jwt-secret}")
     private String jwtSecret;
     @Value("${app.jwt-expiration-milliseconds}")
-    private int jwtExpirationinMs;
+    private int jwtExpirationInMs;
     @Value("${app.jwt-refresh-expiration-millisedonds}")
     private int refreshExpirationMilliseconds;
 
     public String generateToken(Authentication authentication) {
         String email = authentication.getName();
         Date currentDate = new Date();
-        Date expireDate = new Date(currentDate.getTime() + jwtExpirationinMs);
+        Date expireDate = new Date(currentDate.getTime() + jwtExpirationInMs);
 
         return Jwts.builder()
                 .setSubject(email)

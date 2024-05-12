@@ -27,7 +27,8 @@ public class OrderProductService {
     private final ModelMapper modelMapper;
 
     @Autowired
-    public OrderProductService(OrderProductRepository orderProductRepository, OrderRepository orderRepository, ProductRepository productRepository, ModelMapper modelMapper) {
+    public OrderProductService(OrderProductRepository orderProductRepository, OrderRepository orderRepository,
+                               ProductRepository productRepository, ModelMapper modelMapper) {
         this.orderProductRepository = orderProductRepository;
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
@@ -53,12 +54,11 @@ public class OrderProductService {
         OrderProduct orderProduct = orderProductRepository.findByOrderAndProduct(orderId, productId);
         Order order = orderRepository.findOrderById(orderId);
         order.setAmount(order.getAmount()-orderProduct.getAmount());
-        orderProductRepository.deleteProduct(orderId, productId);
+        Product product = productRepository.findProductById(productId).orElseThrow(()->new ResourceNotFoundException("Product", "id", productId));
+        product.setStock(product.getStock()+orderProduct.getQuantity());
+        productRepository.save(product);
         orderRepository.save(order);
-    }
-
-    public OrderProduct findByOrderAndProduct(long orderId, long productId) {
-        return orderProductRepository.findByOrderAndProduct(orderId, productId);
+        orderProductRepository.deleteProduct(orderId, productId);
     }
 
     @Transactional
@@ -76,29 +76,27 @@ public class OrderProductService {
     }
 
     @Transactional
-    public ResponseEntity<OrderProductDTO> addProduct(OrderProductSaveDTO orderProductSaveDTO, long orderId) {
+    public OrderProductDTO addProduct(OrderProductSaveDTO orderProductSaveDTO, long orderId) {
         Order order = orderRepository.findOrderById(orderId);
         Product product = productRepository.findProductById(orderProductSaveDTO.getProductId())
                 .orElseThrow(()->new ResourceNotFoundException("Product", "id", orderProductSaveDTO.getProductId()));
-        /*ProductSaveDTO productSaveDTO = orderProductSaveDTO.getProduct();
-        Product product = modelMapper.map(productSaveDTO, Product.class);*/
+
         long productId = product.getId();
 
-        OrderProduct orderProduct = findByOrderAndProduct(orderId, productId);
+        OrderProduct orderProduct = orderProductRepository.findByOrderAndProduct(orderId, productId);
         if (orderProduct == null) {
-            Product product1 = productRepository.findProductById(orderProductSaveDTO.getProductId())
-                    .orElseThrow(()->new ResourceNotFoundException("Product", "id", orderProductSaveDTO.getProductId()));
-            order.setAmount(order.getAmount() + orderProductSaveDTO.getQuantity()*product1.getPrice());
+            order.setAmount(order.getAmount() + orderProductSaveDTO.getQuantity()*product.getPrice());
             product.setStock(product.getStock() - orderProductSaveDTO.getQuantity());
             productRepository.save(product);
             orderRepository.save(order);
-            return new ResponseEntity<>(create(orderProductSaveDTO, orderId), HttpStatus.CREATED);
+            return create(orderProductSaveDTO, orderId);
         } else {
             OrderProduct response = update(orderProductSaveDTO, orderId, productId);
             product.setStock(product.getStock() - orderProductSaveDTO.getQuantity());
             productRepository.save(product);
             orderProductRepository.save(response);
-            return new ResponseEntity<>(modelMapper.map(response, OrderProductDTO.class), HttpStatus.OK);
+            return modelMapper.map(response, OrderProductDTO.class);
         }
     }
 }
+

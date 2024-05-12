@@ -19,3 +19,6 @@ public class ClientDTO {
     @NotEmpty(message = "This Field cannot be null!")
     private String email;
 }
+
+
+

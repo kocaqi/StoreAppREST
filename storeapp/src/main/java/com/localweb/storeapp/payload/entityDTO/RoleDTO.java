@@ -9,3 +9,14 @@ public class RoleDTO {
     @Min(value = 0)
     private long id;
 }
+
+
+
+
+
+
+
+
+
+
+
